@@ -1,0 +1,164 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  color: var(--ink);
+  /* пока лист лежит на месте — интерфейс под ним недоступен */
+  pointer-events: auto;
+}
+
+/* Лист выступает за нижний край экрана на 64px — там прячется рваный край */
+.edge,
+.sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% + 64px);
+}
+
+.edge {
+  background: #f7f4ec; /* светлая бахрома бумаги под разрывом */
+}
+
+.shadow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 18px);
+  height: 46px;
+  background: linear-gradient(rgba(23, 23, 21, 0.18), transparent);
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 4vw;
+}
+
+.bikeWrap {
+  width: min(92vw, 760px);
+  margin-top: -6vh;
+  transform: rotate(-1.4deg);
+}
+
+/* ── декор по углам ── */
+.starInk {
+  position: absolute;
+  top: clamp(14px, 3vw, 30px);
+  left: clamp(14px, 3vw, 32px);
+  width: 40px;
+}
+
+.starPink {
+  position: absolute;
+  right: clamp(24px, 10vw, 150px);
+  bottom: clamp(70px, 16vh, 150px);
+  width: 46px;
+  transform: rotate(12deg);
+}
+
+.tr {
+  position: absolute;
+  top: clamp(16px, 3vw, 30px);
+  right: clamp(16px, 3vw, 32px);
+  margin: 0;
+  font: 400 12px/1.5 var(--font-mono, ui-monospace), monospace;
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+/* ── клочок бумаги со счётчиком, приклеен скотчем ── */
+.scrap {
+  position: absolute;
+  left: clamp(20px, 6vw, 88px);
+  bottom: clamp(26px, 7vh, 72px);
+  width: min(300px, 74vw);
+  padding: 22px 26px 16px;
+  background-color: #f6f3eb;
+  border-radius: 2px 6px 3px 8px / 5px 2px 7px 3px;
+  box-shadow:
+    0 1px 1px rgba(23, 23, 21, 0.14),
+    0 10px 20px -10px rgba(23, 23, 21, 0.35);
+  transform: rotate(-2.2deg);
+}
+
+.scrap::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  width: 96px;
+  height: 27px;
+  transform: translateX(-50%) rotate(3deg);
+  background: var(--tape);
+  clip-path: polygon(0 0, 100% 0, 98% 20%, 100% 40%, 98% 60%, 100% 80%, 98% 100%, 0 100%, 2% 80%, 0 60%, 2% 40%, 0 20%);
+}
+
+.caption {
+  margin: 0 0 4px;
+  min-height: 1.4em;
+  font: 400 13px/1.4 var(--font-mono, ui-monospace), monospace;
+}
+
+.pctRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 0;
+  line-height: 0.95;
+}
+
+.pct {
+  display: inline-block;
+  min-width: 1.5ch;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-weight: 700;
+  font-size: clamp(64px, 12vw, 104px);
+}
+
+.pctSign {
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-size: clamp(28px, 5vw, 40px);
+}
+
+.progress {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 2px 0 6px;
+  overflow: visible;
+}
+
+.track,
+.bar {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: var(--ink);
+  stroke-opacity: 0.4;
+  stroke-width: 1.5;
+  stroke-dasharray: 2 6;
+}
+
+.bar {
+  stroke: var(--pink);
+  stroke-width: 8;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1; /* SSR-состояние: пусто */
+}
+
+.rpm {
+  margin: 0;
+  font: 400 12px/1.4 var(--font-mono, ui-monospace), monospace;
+  color: var(--ink-soft);
+}
+
+/* SSR-состояние «проявляемых» элементов — скрыты до первого кадра анимации */
+.root [data-fade] {
+  opacity: 0;
+}

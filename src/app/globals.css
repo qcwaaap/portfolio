@@ -1,0 +1,66 @@
+:root {
+  /* палитра: бумага + маркер, акценты из референса */
+  --paper: #e9e5db;
+  --ink: #171715;
+  --ink-soft: #55524a;
+  --pink: #f06ba8;
+  --acid: #c9f13b;
+  --blue: #2e6bdf;
+  --yellow: #f3d53a;
+  --red: #e43d2f;
+  --tape: rgba(214, 207, 183, 0.66);
+
+  --font-hand: 'Gaegu';
+  --font-mono: 'IBM Plex Mono';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono, ui-monospace), monospace;
+}
+
+/* пока идёт загрузка — страница не скроллится */
+html.is-loading,
+html.is-loading body {
+  overflow: hidden;
+}
+
+/* Бумага: мелкое зерно + крупные размытые пятна. Два SVG-фильтра, рисуются один раз. */
+.paper-surface,
+body {
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .26 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.4'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .009' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .48 0 0 0 0 .36 0 0 0 .9 -.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)' opacity='.35'/%3E%3C/svg%3E");
+  background-size:
+    240px 240px,
+    900px 900px;
+}
+
+/* временная заглушка, пока нет hero */
+.home-placeholder {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-size: clamp(44px, 10vw, 120px);
+  line-height: 1;
+}
+
+.home-placeholder small {
+  display: block;
+  margin-top: 16px;
+  font: 400 13px/1.4 var(--font-mono, ui-monospace), monospace;
+  color: var(--ink-soft);
+}

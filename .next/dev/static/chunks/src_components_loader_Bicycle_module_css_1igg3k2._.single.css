@@ -1,0 +1,46 @@
+/* [project]/src/components/loader/Bicycle.module.css [app-client] (css) */
+.Bicycle-module__ouwH5G__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.Bicycle-module__ouwH5G__svg path, .Bicycle-module__ouwH5G__svg circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.Bicycle-module__ouwH5G__svg [data-draw] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1px;
+  opacity: 0;
+}
+
+.Bicycle-module__ouwH5G__svg [data-fade] {
+  opacity: 0;
+}
+
+.Bicycle-module__ouwH5G__svg .Bicycle-module__ouwH5G__fill {
+  fill: var(--ink);
+}
+
+.Bicycle-module__ouwH5G__svg .Bicycle-module__ouwH5G__ground {
+  stroke: var(--blue);
+  stroke-opacity: .92;
+}
+
+.Bicycle-module__ouwH5G__svg .Bicycle-module__ouwH5G__chain {
+  stroke-dasharray: 2 5;
+}
+
+.Bicycle-module__ouwH5G__svg text {
+  font-family: var(--font-hand, "Comic Sans MS"), cursive;
+  fill: var(--ink);
+  stroke: none;
+  font-size: 26px;
+}
+
+/*# sourceMappingURL=src_components_loader_Bicycle_module_css_1igg3k2._.single.css.map*/
