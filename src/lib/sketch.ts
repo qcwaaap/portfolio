@@ -151,3 +151,31 @@ export function tornClips(seed: number, steps = 52) {
   };
   return { sheet: build(sheet, 30), edge: build(edge, 30) };
 }
+
+/** Плавная кривая через точки с дрожанием — для «нарисованных» контуров */
+export function scribbleCurve(points: readonly Pt[], seed: number, jitter = 1) {
+  const rand = rng(seed);
+  return spline(points.map((p) => [p[0] + (rand() - 0.5) * 2 * jitter, p[1] + (rand() - 0.5) * 2 * jitter] as Pt));
+}
+
+type EllipseOpts = CircleOpts & { rotate?: number };
+
+/** Эллипс, обведённый от руки (петля вокруг текста) */
+export function scribbleEllipse(cx: number, cy: number, rx: number, ry: number, seed: number, opts: EllipseOpts = {}) {
+  const rand = rng(seed);
+  const { sweep = 1.08, jitter = 0.014, drift = 0.06, rotate = 0 } = opts;
+  const start = opts.start ?? rand() * Math.PI * 2;
+  const n = 22;
+  const cos = Math.cos((rotate * Math.PI) / 180);
+  const sin = Math.sin((rotate * Math.PI) / 180);
+  const pts: Pt[] = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const a = start + t * sweep * Math.PI * 2;
+    const k = 1 + drift * (t - 0.5) + (rand() - 0.5) * 2 * jitter;
+    const x = Math.cos(a) * rx * k;
+    const y = Math.sin(a) * ry * k;
+    pts.push([cx + x * cos - y * sin, cy + x * sin + y * cos]);
+  }
+  return spline(pts);
+}

@@ -5,6 +5,7 @@ import '@fontsource/gaegu/400.css';
 import '@fontsource/gaegu/700.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
+import 'lenis/dist/lenis.css';
 import './globals.css';
 
 export const metadata: Metadata = {

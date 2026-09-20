@@ -1,0 +1,8 @@
+.pos {
+  position: absolute;
+}
+
+.mouse,
+.rot {
+  width: 100%;
+}

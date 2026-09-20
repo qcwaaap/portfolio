@@ -1,10 +1,15 @@
 # Portfolio — scrapbook
 
-Этап 1: экран загрузки.
+Готово: экран загрузки → hero (коллаж, заголовок штрихами, курсор, плавный скролл, параллакс).
 
     npm install
     npm run dev
 
-Loader: `src/components/loader/`. Шрифты (Gaegu, IBM Plex Mono) — через @fontsource, из node_modules.
-# portfolio
-# portfolio
+Где что лежит
+- `src/components/loader/`   экран загрузки
+- `src/components/hero/`     hero: коллаж, заголовок, доодлы
+- `src/components/collage/`  Item (предмет на «столе» + параллакс) и Photo (фото на скотче)
+- `src/components/cursor/`   кастомный курсор (OPEN / VIEW / PET через data-cursor="…")
+- `src/components/smooth/`   плавный скролл (Lenis)
+- `src/content/photos.ts`    фотографии: впиши пути к своим файлам из public/images
+- `src/lib/`                 sketch.ts (рисованная геометрия), handFont.ts (шрифт из штрихов)

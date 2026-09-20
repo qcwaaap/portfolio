@@ -17,14 +17,14 @@ import styles from './Bicycle.module.css';
  */
 
 // ── ключевые точки рамы (viewBox 660×380, начало по y = 40) ──────────────────
-const R: Pt = [172, 278]; // задняя втулка
-const F: Pt = [468, 278]; // передняя втулка
-const BB: Pt = [302, 296]; // каретка
-const S: Pt = [262, 152]; // верх подседельной трубы
-const SS: Pt = [260, 168]; // крепление верхнего пера
-const H1: Pt = [412, 146]; // верх рулевой
-const H2: Pt = [424, 178]; // низ рулевой
-const WHEEL_R = 108;
+export const R: Pt = [172, 278]; // задняя втулка
+export const F: Pt = [468, 278]; // передняя втулка
+export const BB: Pt = [302, 296]; // каретка
+export const S: Pt = [262, 152]; // верх подседельной трубы
+export const SS: Pt = [260, 168]; // крепление верхнего пера
+export const H1: Pt = [412, 146]; // верх рулевой
+export const H2: Pt = [424, 178]; // низ рулевой
+export const WHEEL_R = 108;
 
 type StrokeProps = { d: string; at: number; dur: number; w?: number; opacity?: number };
 
@@ -58,7 +58,7 @@ function Tube({ a, b, seed, at, dur, w }: { a: Pt; b: Pt; seed: number; at: numb
   );
 }
 
-const TUBES: ReadonlyArray<{ a: Pt; b: Pt; at: number; dur: number; w: number }> = [
+export const TUBES: ReadonlyArray<{ a: Pt; b: Pt; at: number; dur: number; w: number }> = [
   { a: S, b: BB, at: 0.16, dur: 0.045, w: 5.5 }, //   подседельная
   { a: S, b: H1, at: 0.18, dur: 0.05, w: 5.5 }, //    верхняя
   { a: H2, b: BB, at: 0.2, dur: 0.055, w: 6 }, //     нижняя

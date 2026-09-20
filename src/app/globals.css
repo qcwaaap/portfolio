@@ -47,20 +47,18 @@ body {
     900px 900px;
 }
 
-/* временная заглушка, пока нет hero */
-.home-placeholder {
+
+/* пока работает кастомный курсор — системный прячем */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.next-placeholder {
   min-height: 100svh;
   display: grid;
   place-items: center;
-  text-align: center;
   font-family: var(--font-hand, 'Comic Sans MS'), cursive;
-  font-size: clamp(44px, 10vw, 120px);
-  line-height: 1;
-}
-
-.home-placeholder small {
-  display: block;
-  margin-top: 16px;
-  font: 400 13px/1.4 var(--font-mono, ui-monospace), monospace;
+  font-size: clamp(28px, 4vw, 56px);
   color: var(--ink-soft);
 }
