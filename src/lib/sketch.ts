@@ -179,3 +179,27 @@ export function scribbleEllipse(cx: number, cy: number, rx: number, ry: number, 
   }
   return spline(pts);
 }
+
+/**
+ * Рваный ВЕРХНИЙ край секции: полоса высотой `height`px, у которой верх неровный.
+ * Возвращает два слоя: сама бумага и светлая бахрома чуть выше.
+ */
+export function tornTopClips(seed: number, height = 26, steps = 56) {
+  const rand = rng(seed);
+  const paper: number[] = [];
+  const fringe: number[] = [];
+  let y = 0;
+  for (let i = 0; i <= steps; i++) {
+    y = y * 0.6 + (rand() - 0.5) * 12;
+    const jag = (rand() - 0.5) * 4;
+    paper.push(height * 0.55 + y + jag);
+    fringe.push(height * 0.55 + y + jag - 3 - rand() * 3);
+  }
+  const build = (ys: number[]) => {
+    const pts = ['0 100%'];
+    for (let i = 0; i <= steps; i++) pts.push(`${n1((i / steps) * 100)}% ${n1(Math.max(1, ys[i]!))}px`);
+    pts.push('100% 100%');
+    return `polygon(${pts.join(',')})`;
+  };
+  return { paper: build(paper), fringe: build(fringe) };
+}

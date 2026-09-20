@@ -1,0 +1,21 @@
+.edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -25px;
+  height: 26px;
+  pointer-events: none;
+}
+
+.fringe,
+.paper {
+  position: absolute;
+  inset: 0;
+}
+
+.fringe {
+  background: #f7f4ec;
+}
+
+.paper {
+}

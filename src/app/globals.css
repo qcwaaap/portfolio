@@ -1,6 +1,7 @@
 :root {
   /* палитра: бумага + маркер, акценты из референса */
   --paper: #e9e5db;
+  --paper-2: #efece4; /* светлее: следующий лист бумаги */
   --ink: #171715;
   --ink-soft: #55524a;
   --pink: #f06ba8;
@@ -31,7 +32,9 @@ body {
 
 /* пока идёт загрузка — страница не скроллится */
 html.is-loading,
-html.is-loading body {
+html.is-loading body,
+html.is-modal,
+html.is-modal body {
   overflow: hidden;
 }
 

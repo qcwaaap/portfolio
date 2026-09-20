@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { PRELOAD } from '@/content/photos';
 import { Cursor } from './cursor/Cursor';
 import { Hero } from './hero/Hero';
+import { Work } from './work/Work';
 import { Loader } from './loader/Loader';
 import { SmoothScroll } from './smooth/SmoothScroll';
 
@@ -23,9 +24,10 @@ export function Experience() {
       <Cursor />
       <main>
         <Hero revealed={revealed} />
-        {/* ЗАГЛУШКА — сюда придёт «selected work» */}
-        <section id="work" className="next-placeholder">
-          selected work — next
+        <Work />
+        {/* ЗАГЛУШКА — сюда придёт about */}
+        <section id="about" className="next-placeholder">
+          about — next
         </section>
       </main>
     </>
