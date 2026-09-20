@@ -35,18 +35,16 @@ html.is-loading body {
   overflow: hidden;
 }
 
-/* Бумага: мелкое зерно + крупные размытые пятна. Два SVG-фильтра, рисуются один раз. */
+/* Бумага: зерно + крупные пятна. Это готовые PNG (public/textures), а не SVG-фильтры:
+   feTurbulence в фоне заставляет браузер пересчитывать шум, особенно в Safari. */
 .paper-surface,
 body {
   background-color: var(--paper);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .3 0 0 0 0 .26 0 0 0 0 .2 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.4'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.006 .009' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .48 0 0 0 0 .36 0 0 0 .9 -.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)' opacity='.35'/%3E%3C/svg%3E");
+  background-image: url('/textures/grain.png'), url('/textures/mottle.png');
   background-size:
-    240px 240px,
+    256px 256px,
     900px 900px;
 }
-
 
 /* пока работает кастомный курсор — системный прячем */
 html.has-cursor,
