@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { CadenceSpotlight } from '@/components/cadence/CadenceSpotlight';
 import { TornEdge } from '@/components/collage/TornEdge';
 import { PROJECTS, type ProjectId } from '@/content/projects';
 import { scribbleArrow, scribbleLine } from '@/lib/sketch';
@@ -71,35 +72,40 @@ export function Work() {
   }, []);
 
   return (
-    <section ref={rootRef} id="work" className={styles.work} aria-labelledby="work-title">
-      <TornEdge seed={3} />
+    <>
+      <section ref={rootRef} id="work" className={styles.work} aria-labelledby="work-title">
+        <TornEdge seed={3} />
 
-      <h2 id="work-title" className={styles.heading} data-work-head="">
-        selected work
-        <svg className={styles.underline} viewBox="0 0 210 14" aria-hidden data-work-line="">
-          <path d={UNDERLINE} pathLength={1} />
-        </svg>
-      </h2>
+        <h2 id="work-title" className={styles.heading} data-work-head="">
+          selected work
+          <svg className={styles.underline} viewBox="0 0 210 14" aria-hidden data-work-line="">
+            <path d={UNDERLINE} pathLength={1} />
+          </svg>
+        </h2>
 
-      <div className={styles.index} data-work-index="" aria-label="Projects">
-        {PROJECTS.map((p) => (
-          <button key={p.id} type="button" className={styles.indexBtn} data-cursor="OPEN" onClick={() => setOpenId(p.id)}>
-            {p.index}
-          </button>
-        ))}
-        <svg className={styles.indexArrow} viewBox="0 0 24 64" aria-hidden>
-          <path d={DOWN.shaft} />
-          <path d={DOWN.head} />
-        </svg>
-      </div>
+        <div className={styles.index} data-work-index="" aria-label="Projects">
+          {PROJECTS.map((p) => (
+            <button key={p.id} type="button" className={styles.indexBtn} data-cursor="OPEN" onClick={() => setOpenId(p.id)}>
+              {p.index}
+            </button>
+          ))}
+          <svg className={styles.indexArrow} viewBox="0 0 24 64" aria-hidden>
+            <path d={DOWN.shaft} />
+            <path d={DOWN.head} />
+          </svg>
+        </div>
 
-      <div className={styles.row}>
-        {PROJECTS.map((p, i) => (
-          <ProjectCard key={p.id} project={p} seed={i + 1} hidden={openId === p.id} onOpen={setOpenId} />
-        ))}
-      </div>
+        <div className={styles.row}>
+          {PROJECTS.map((p, i) => (
+            <ProjectCard key={p.id} project={p} seed={i + 1} hidden={openId === p.id} onOpen={setOpenId} />
+          ))}
+        </div>
+
+      </section>
+
+      <CadenceSpotlight onOpen={() => setOpenId('cadence')} />
 
       {openProject && createPortal(<ProjectModal project={openProject} onClosed={() => setOpenId(null)} />, document.body)}
-    </section>
+    </>
   );
 }

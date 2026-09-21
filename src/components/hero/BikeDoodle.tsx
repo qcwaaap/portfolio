@@ -3,7 +3,7 @@ import { rng, scribbleCircle, scribbleLine, scribblePoly, type Pt } from '@/lib/
 import styles from './Hero.module.css';
 
 /** Колесо вокруг (0,0): покрышка в два витка + 12 перекрёстных спиц. */
-function wheelPaths(seed: number) {
+export function wheelPaths(seed: number) {
   const rand = rng(seed);
   const spokes = Array.from({ length: 12 }, (_, i) => {
     const ang = ((i * 30 + (rand() - 0.5) * 5) * Math.PI) / 180;
@@ -20,8 +20,8 @@ function wheelPaths(seed: number) {
   };
 }
 
-const REAR = wheelPaths(21);
-const FRONT = wheelPaths(34);
+export const REAR = wheelPaths(21);
+export const FRONT = wheelPaths(34);
 
 const GROUND = scribblePoly(
   [
@@ -47,6 +47,31 @@ function Wheel({ p }: { p: ReturnType<typeof wheelPaths> }) {
       <path d={p.tireA} strokeWidth={5.5} />
       <path d={p.tireB} strokeWidth={2.2} strokeOpacity={0.6} />
       <circle r={6} className={styles.fillInk} />
+    </>
+  );
+}
+
+/** Рама, руль, седло, система, педали и цепь — общая для hero и секции Cadence. */
+export function BikeFrame() {
+  return (
+    <>
+      {TUBES.map((t, i) => (
+          <g key={i}>
+            <path d={scribbleLine(t.a, t.b, 50 + i * 3, { wobble: 1.2, overshoot: 3 })} strokeWidth={t.w} />
+            <path
+              d={scribbleLine([t.a[0] + 1.4, t.a[1] - 1.1], [t.b[0] - 1, t.b[1] + 1.3], 151 + i * 3, { wobble: 1.8, overshoot: 4 })}
+              strokeWidth={t.w * 0.38}
+              strokeOpacity={0.6}
+            />
+          </g>
+        ))}
+        <path d="M230 121Q264 110 300 118" strokeWidth={9} />
+        <path d="M394 119Q418 106 446 112Q458 119 453 135" strokeWidth={4.5} />
+        <path d={scribbleCircle(BB[0], BB[1], 26, 77, { sweep: 1.07 })} strokeWidth={3.5} />
+        <path d={scribbleLine([270, 337], [298, 334], 80)} strokeWidth={6} />
+        <path d={scribbleLine([307, 255], [335, 258], 81)} strokeWidth={6} />
+        <path d={scribbleLine([BB[0] + 3, BB[1] - 26], [R[0] + 2, R[1] - 11], 90, { wobble: 1 })} strokeWidth={3} strokeDasharray="2 5" />
+        <path d={scribbleLine([BB[0] - 2, BB[1] + 26], [R[0], R[1] + 11], 91, { wobble: 1 })} strokeWidth={3} strokeDasharray="2 5" />
     </>
   );
 }
@@ -79,23 +104,7 @@ export function BikeDoodle() {
           <Wheel p={FRONT} />
         </g>
 
-        {TUBES.map((t, i) => (
-          <g key={i}>
-            <path d={scribbleLine(t.a, t.b, 50 + i * 3, { wobble: 1.2, overshoot: 3 })} strokeWidth={t.w} />
-            <path
-              d={scribbleLine([t.a[0] + 1.4, t.a[1] - 1.1], [t.b[0] - 1, t.b[1] + 1.3], 151 + i * 3, { wobble: 1.8, overshoot: 4 })}
-              strokeWidth={t.w * 0.38}
-              strokeOpacity={0.6}
-            />
-          </g>
-        ))}
-        <path d="M230 121Q264 110 300 118" strokeWidth={9} />
-        <path d="M394 119Q418 106 446 112Q458 119 453 135" strokeWidth={4.5} />
-        <path d={scribbleCircle(BB[0], BB[1], 26, 77, { sweep: 1.07 })} strokeWidth={3.5} />
-        <path d={scribbleLine([270, 337], [298, 334], 80)} strokeWidth={6} />
-        <path d={scribbleLine([307, 255], [335, 258], 81)} strokeWidth={6} />
-        <path d={scribbleLine([BB[0] + 3, BB[1] - 26], [R[0] + 2, R[1] - 11], 90, { wobble: 1 })} strokeWidth={3} strokeDasharray="2 5" />
-        <path d={scribbleLine([BB[0] - 2, BB[1] + 26], [R[0], R[1] + 11], 91, { wobble: 1 })} strokeWidth={3} strokeDasharray="2 5" />
+        <BikeFrame />
       </g>
     </svg>
   );

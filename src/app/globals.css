@@ -2,6 +2,7 @@
   /* палитра: бумага + маркер, акценты из референса */
   --paper: #e9e5db;
   --paper-2: #efece4; /* светлее: следующий лист бумаги */
+  --paper-3: #e9e5da;
   --ink: #171715;
   --ink-soft: #55524a;
   --pink: #f06ba8;
@@ -23,6 +24,7 @@
 
 html,
 body {
+  overflow-x: clip;
   margin: 0;
   padding: 0;
   background-color: var(--paper);
@@ -55,11 +57,3 @@ html.has-cursor * {
   cursor: none !important;
 }
 
-.next-placeholder {
-  min-height: 100svh;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
-  font-size: clamp(28px, 4vw, 56px);
-  color: var(--ink-soft);
-}

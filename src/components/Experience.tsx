@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { PRELOAD } from '@/content/photos';
 import { Cursor } from './cursor/Cursor';
+import { RoamingDog } from './dog/RoamingDog';
+import { About } from './about/About';
+import { Contact } from './contact/Contact';
 import { Hero } from './hero/Hero';
 import { Work } from './work/Work';
 import { Loader } from './loader/Loader';
@@ -22,13 +25,12 @@ export function Experience() {
       <Loader assets={PRELOAD} onExitStart={() => setRevealed(true)} onComplete={() => setReady(true)} />
       <SmoothScroll enabled={ready} />
       <Cursor />
+      <RoamingDog enabled={ready} />
       <main>
         <Hero revealed={revealed} />
         <Work />
-        {/* ЗАГЛУШКА — сюда придёт about */}
-        <section id="about" className="next-placeholder">
-          about — next
-        </section>
+        <About />
+        <Contact />
       </main>
     </>
   );

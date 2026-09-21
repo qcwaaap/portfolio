@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import styles from './Photo.module.css';
 
-export type PhotoTone = 'mountains' | 'flowers' | 'dogs' | 'landscape';
+export type PhotoTone = 'mountains' | 'flowers' | 'dogs' | 'landscape' | 'portrait' | 'cat' | 'window' | 'lake';
 type Tape = 'tl' | 'tr' | 'bl' | 'br' | 'top';
 
 type PhotoProps = {
