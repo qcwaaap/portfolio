@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TornEdge } from '@/components/collage/TornEdge';
 import { PROJECTS } from '@/content/projects';
+import { sound } from '@/lib/sound/engine';
 import { CX, CY, WAVE_H, WAVE_NOISE, WAVE_NOISE_2, WAVE_W, rpmToAngle, ringPaths, wavePath, wheelPaths } from './geometry';
 import styles from './Cadence.module.css';
 
@@ -145,6 +146,7 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
       const r = wheel.getBoundingClientRect();
       return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
     };
+    let tickAcc = 0; // накопленный градус с последнего «тика» — трещотка свободного хода
     const onDown = (e: PointerEvent) => {
       host.setPointerCapture(e.pointerId);
       const c = centerOf();
@@ -167,6 +169,11 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
       S.lastT = now;
       S.drag += deg;
       S.dragVel += (deg / dt - S.dragVel) * 0.35;
+      tickAcc += Math.abs(deg);
+      if (tickAcc > 14) {
+        tickAcc = 0;
+        sound.tick();
+      }
     };
     const onUp = () => {
       S.dragging = false;

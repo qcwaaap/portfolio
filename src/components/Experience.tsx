@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { PRELOAD } from '@/content/photos';
 import { Cursor } from './cursor/Cursor';
 import { RoamingDog } from './dog/RoamingDog';
+import { SoundToggle } from './sound/SoundToggle';
+import { useUiSounds } from './sound/useUiSounds';
 import { About } from './about/About';
 import { Contact } from './contact/Contact';
 import { Hero } from './hero/Hero';
@@ -19,6 +21,7 @@ import { SmoothScroll } from './smooth/SmoothScroll';
 export function Experience() {
   const [revealed, setRevealed] = useState(false);
   const [ready, setReady] = useState(false);
+  useUiSounds();
 
   return (
     <>
@@ -26,6 +29,7 @@ export function Experience() {
       <SmoothScroll enabled={ready} />
       <Cursor />
       <RoamingDog enabled={ready} />
+      <SoundToggle />
       <main>
         <Hero revealed={revealed} />
         <Work />

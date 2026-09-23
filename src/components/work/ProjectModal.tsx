@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Photo } from '@/components/collage/Photo';
 import { getLenis } from '@/components/smooth/lenisStore';
+import { sound } from '@/lib/sound/engine';
 import type { Project } from '@/content/projects';
 import { ProjectArt } from './ProjectArt';
 import styles from './ProjectModal.module.css';
@@ -49,6 +50,7 @@ export function ProjectModal({ project: p, onClosed }: Props) {
     const vis = visualRef.current;
     if (!root || !vis) return;
     reduced.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    sound.open();
 
     const ctx = gsap.context(() => {
       const q = gsap.utils.selector(root);
@@ -84,6 +86,7 @@ export function ProjectModal({ project: p, onClosed }: Props) {
     const vis = visualRef.current;
     if (!root || !vis || closing.current) return;
     closing.current = true;
+    sound.close();
     const q = gsap.utils.selector(root);
     const from = originOf(p.id);
     const tl = gsap.timeline({ onComplete: onClosed });
