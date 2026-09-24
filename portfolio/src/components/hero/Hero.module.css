@@ -1,0 +1,337 @@
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 660px;
+  overflow: clip;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── общий стиль всех «нарисованных» svg ── */
+.titleSvg,
+.dogSvg,
+.bikeSvg,
+.loopSvg,
+.noteSvg,
+.stickerArrow {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.titleSvg path,
+.dogSvg path,
+.bikeSvg path,
+.loopSvg path,
+.noteSvg path,
+.stickerArrow path,
+.dogSvg circle,
+.bikeSvg circle,
+.loopSvg circle,
+.noteSvg circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.loopSvg path.pink {
+  stroke: var(--pink);
+}
+
+.dogSvg circle.fillInk,
+.bikeSvg circle.fillInk,
+.loopSvg circle.fillInk {
+  fill: var(--ink);
+  stroke: none;
+}
+
+.loopSvg text,
+.noteSvg text {
+  fill: var(--ink);
+  stroke: none;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+}
+
+
+.loopSvg text {
+  font-size: 30px;
+}
+
+.noteSvg text {
+  font-size: 13px;
+}
+
+/* ── навигация и мета ── */
+.nav {
+  position: absolute;
+  top: 3.2%;
+  left: 2.2vw;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2.4vw;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-size: clamp(20px, 1.8vw, 28px);
+}
+
+.nav a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav a:hover {
+  text-decoration: underline wavy var(--pink);
+  text-underline-offset: 5px;
+}
+
+.navStar {
+  display: block;
+}
+
+.navStarSvg {
+  display: block;
+  width: 34px;
+}
+
+.meta {
+  position: absolute;
+  top: 3.4%;
+  right: 2.2vw;
+  z-index: 10;
+  margin: 0;
+  font: 400 12px/1.5 var(--font-mono, ui-monospace), monospace;
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+/* ── композиция коллажа: desktop ── */
+.mountains {
+  left: -2.5vw;
+  top: 15%;
+  width: 25vw;
+}
+
+.title {
+  left: 22.5vw;
+  top: 13%;
+  width: 39vw;
+}
+
+.star1 {
+  left: 62vw;
+  top: 11%;
+  width: 3vw;
+}
+
+.starSvg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.tagline {
+  left: 23.5vw;
+  top: 44%;
+}
+
+.taglineText {
+  margin: 0;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-size: clamp(24px, 2.5vw, 42px);
+  white-space: nowrap;
+}
+
+.loop {
+  left: 26vw;
+  top: 50%;
+  width: 24vw;
+}
+
+.dog {
+  left: 5vw;
+  top: 64%;
+  width: 11.5vw;
+}
+
+.dogHost {
+  display: block;
+}
+
+.starPink {
+  left: 17vw;
+  top: 80%;
+  width: 3.4vw;
+}
+
+.bike {
+  left: 46vw;
+  top: 60%;
+  width: 30vw;
+}
+
+.note {
+  left: 61vw;
+  top: 32%;
+  width: 14vw;
+}
+
+.flowers {
+  left: 64vw;
+  top: 4%;
+  width: 16.5vw;
+}
+
+.dogs {
+  left: 79.5vw;
+  top: 21%;
+  width: 18vw;
+}
+
+.landscape {
+  left: 73.5vw;
+  top: 45%;
+  width: 20vw;
+}
+
+.sticker {
+  left: 87.5vw;
+  top: 66%;
+  width: 9vw;
+}
+
+.stickerLink {
+  display: block;
+  padding: 14px 16px 10px 14px;
+  background: var(--acid);
+  color: var(--ink);
+  text-decoration: none;
+  clip-path: polygon(3% 0, 100% 4%, 97% 100%, 0 94%);
+}
+
+.stickerText {
+  display: block;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-weight: 700;
+  font-size: clamp(18px, 2.1vw, 32px);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.stickerArrow {
+  width: 44%;
+  margin: 6px 0 0 auto;
+}
+
+/* ── мобильная версия: другая композиция, а не столбик ── */
+@media (max-width: 820px) {
+  .hero {
+    min-height: 720px;
+  }
+
+  .nav {
+    top: 2.6%;
+    left: 5vw;
+    gap: 5vw;
+    font-size: 21px;
+  }
+
+  .navStarSvg {
+    width: 28px;
+  }
+
+  .meta {
+    top: 2.8%;
+    right: 5vw;
+    font-size: 10px;
+  }
+
+  .mountains {
+    left: -9vw;
+    top: 9%;
+    width: 47vw;
+  }
+
+  .flowers {
+    left: 57vw;
+    top: 8%;
+    width: 39vw;
+  }
+
+  .title {
+    left: 3vw;
+    top: 27%;
+    width: 93vw;
+  }
+
+  .star1 {
+    left: 84vw;
+    top: 24%;
+    width: 9vw;
+  }
+
+  .tagline {
+    left: 9vw;
+    top: 45.5%;
+  }
+
+  .taglineText {
+    font-size: 28px;
+  }
+
+  .loop {
+    left: 8vw;
+    top: 49.5%;
+    width: 70vw;
+  }
+
+  .note,
+  .starPink {
+    display: none;
+  }
+
+  .dogs {
+    left: 3vw;
+    top: 66%;
+    width: 45vw;
+  }
+
+  .landscape {
+    left: 51vw;
+    top: 62.5%;
+    width: 46vw;
+  }
+
+  .sticker {
+    left: 73vw;
+    top: 75%;
+    width: 24vw;
+  }
+
+  .stickerText {
+    font-size: 21px;
+  }
+
+  .dog {
+    left: 3vw;
+    top: 85%;
+    width: 21vw;
+  }
+
+  .bike {
+    left: 28vw;
+    top: 83%;
+    width: 60vw;
+  }
+}

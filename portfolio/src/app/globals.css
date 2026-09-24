@@ -1,0 +1,59 @@
+:root {
+  /* палитра: бумага + маркер, акценты из референса */
+  --paper: #e9e5db;
+  --paper-2: #efece4; /* светлее: следующий лист бумаги */
+  --paper-3: #e9e5da;
+  --ink: #171715;
+  --ink-soft: #55524a;
+  --pink: #f06ba8;
+  --acid: #c9f13b;
+  --blue: #2e6bdf;
+  --yellow: #f3d53a;
+  --red: #e43d2f;
+  --tape: rgba(214, 207, 183, 0.66);
+
+  --font-hand: 'Gaegu';
+  --font-mono: 'IBM Plex Mono';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono, ui-monospace), monospace;
+}
+
+/* пока идёт загрузка — страница не скроллится */
+html.is-loading,
+html.is-loading body,
+html.is-modal,
+html.is-modal body {
+  overflow: hidden;
+}
+
+/* Бумага: зерно + крупные пятна. Это готовые PNG (public/textures), а не SVG-фильтры:
+   feTurbulence в фоне заставляет браузер пересчитывать шум, особенно в Safari. */
+.paper-surface,
+body {
+  background-color: var(--paper);
+  background-image: url('/textures/grain.png'), url('/textures/mottle.png');
+  background-size:
+    256px 256px,
+    900px 900px;
+}
+
+/* пока работает кастомный курсор — системный прячем */
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+

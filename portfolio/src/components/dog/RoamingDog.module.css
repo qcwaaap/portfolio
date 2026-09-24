@@ -1,0 +1,63 @@
+.dog {
+  position: fixed;
+  left: 0;
+  bottom: 2px;
+  z-index: 900; /* над секциями, под модалкой и курсором */
+  width: clamp(72px, 7.5vw, 112px);
+  visibility: hidden;
+  will-change: transform;
+  /* лёгкий светлый ореол: собачка читается и на тёмной бумаге (Cadence, footer) */
+  filter: drop-shadow(0 0 1px #f6f3eb) drop-shadow(0 0 2px rgba(246, 243, 235, 0.85));
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.svg path,
+.svg circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3.2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.svg circle.dot {
+  fill: var(--ink);
+  stroke: none;
+}
+
+.svg path.tongue {
+  stroke: var(--pink);
+}
+
+.svg ellipse.shadow {
+  fill: rgba(23, 23, 21, 0.12);
+}
+
+.heart {
+  position: absolute;
+  top: -6px;
+  width: 22px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  top: -26px;
+  padding: 0 4px;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow:
+    0 0 3px #f6f3eb,
+    0 0 6px #f6f3eb;
+}

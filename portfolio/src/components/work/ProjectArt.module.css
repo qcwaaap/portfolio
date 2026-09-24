@@ -1,0 +1,152 @@
+.art {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── CADENCE: тёмный скриншот с зелёной стрелкой-зигзагом ── */
+.cadence {
+  background:
+    radial-gradient(ellipse 45% 60% at 36% 62%, rgba(255, 255, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse 60% 70% at 40% 60%, #34342f, #1b1b19 70%);
+}
+
+.cadPanel {
+  position: absolute;
+  top: 9%;
+  right: 6%;
+  width: 34%;
+  height: 46%;
+  padding: 5% 5%;
+  background: #262624;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cadBar {
+  height: 9%;
+  margin-bottom: 8%;
+  background: var(--acid);
+  width: 70%;
+}
+
+.cadLine {
+  height: 5%;
+  margin-bottom: 9%;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.cadLine:nth-child(3) {
+  width: 80%;
+}
+.cadLine:nth-child(5) {
+  width: 55%;
+}
+
+.cadArrow {
+  position: absolute;
+  left: 4%;
+  bottom: 8%;
+  width: 56%;
+  height: auto;
+  overflow: visible;
+}
+
+.cadArrow path {
+  fill: none;
+  stroke: var(--acid);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── CARDIZEL: тёплый интерьер с вордмарком ── */
+.cardizel {
+  background: linear-gradient(125deg, #d3bfa3, #a68a6a);
+}
+
+.room {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 46%;
+  height: 100%;
+  background: linear-gradient(160deg, #eadcc8, #c8ad8b);
+  clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%, 0 34%);
+}
+
+.door {
+  position: absolute;
+  right: 18%;
+  bottom: 0;
+  width: 22%;
+  height: 58%;
+  background: rgba(60, 44, 30, 0.35);
+}
+
+.wordmark {
+  position: absolute;
+  left: 8%;
+  top: 34%;
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+  font-size: 15cqw;
+  font-weight: 400;
+  color: #fbf6ee;
+  letter-spacing: 0.01em;
+}
+
+.cardBars {
+  position: absolute;
+  left: 8%;
+  top: 58%;
+  width: 34%;
+}
+
+.cardBars i {
+  display: block;
+  height: 2.2cqw;
+  margin-bottom: 2.4cqw;
+  background: rgba(251, 246, 238, 0.4);
+}
+
+.cardBars i:nth-child(2) {
+  width: 70%;
+}
+
+/* ── TODO: лист бумаги со схемой ── */
+.todo {
+  background: #ecebe3;
+}
+
+.todoSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.todoSvg path,
+.todoSvg ellipse {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.todoSvg text {
+  font-family: var(--font-mono, ui-monospace), monospace;
+  font-size: 9px;
+  fill: var(--ink);
+  text-anchor: middle;
+}
+
+/* ── TAMAGOCHI: пастельная 3D-сцена ── */
+.tama {
+  background: linear-gradient(170deg, #9ec1ea 0%, #cf9be0 55%, #f3b7d2 100%);
+}
+
+.tamaSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

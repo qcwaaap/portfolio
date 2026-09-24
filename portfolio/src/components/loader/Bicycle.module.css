@@ -1,0 +1,45 @@
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.svg path,
+.svg circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Штрихи «рисуются»: pathLength=1 → dash-длина = 1 = весь путь. Стартовое состояние — невидим. */
+.svg [data-draw] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+
+.svg [data-fade] {
+  opacity: 0;
+}
+
+.svg .fill {
+  fill: var(--ink);
+}
+
+.svg .ground {
+  stroke: var(--blue);
+  stroke-opacity: 0.92;
+}
+
+.svg .chain {
+  stroke-dasharray: 2 5;
+}
+
+.svg text {
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-size: 26px;
+  fill: var(--ink);
+  stroke: none;
+}

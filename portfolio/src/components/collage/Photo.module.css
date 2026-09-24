@@ -1,0 +1,209 @@
+.photo {
+  position: relative;
+  margin: 0;
+  padding: 6px;
+  background: #f6f3eb;
+  box-shadow:
+    0 1px 1px rgba(23, 23, 21, 0.18),
+    0 8px 16px -8px rgba(23, 23, 21, 0.35);
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.45s ease;
+}
+
+.polaroid {
+  padding: 9px 9px 30px;
+}
+
+.photo:not(.static):hover,
+:global([data-lift]:hover) .photo:not(.static) {
+  transform: translateY(-9px) rotate(-0.6deg);
+  box-shadow:
+    0 2px 2px rgba(23, 23, 21, 0.16),
+    0 26px 34px -14px rgba(23, 23, 21, 0.5);
+}
+
+.img {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--ratio);
+}
+
+.img img,
+.placeholder,
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.art {
+  container-type: inline-size;
+}
+
+.photo:not(.static):hover .img img,
+.photo:not(.static):hover .placeholder,
+.photo:not(.static):hover .art,
+:global([data-lift]:hover) .photo:not(.static) .img img,
+:global([data-lift]:hover) .photo:not(.static) .placeholder,
+:global([data-lift]:hover) .photo:not(.static) .art {
+  transform: scale(1.04);
+}
+
+/* лёгкое зерно поверх, чтобы фото «жило» на бумаге */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('/textures/grain.png');
+  background-size: 200px 200px;
+  opacity: 0.9;
+}
+
+/* ── заглушки ── */
+.placeholder {
+  position: relative;
+  background-color: #b9b4ac;
+}
+
+.label {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 2px 7px;
+  font: 500 11px/1.4 var(--font-mono, ui-monospace), monospace;
+  color: var(--ink);
+  background: rgba(246, 243, 235, 0.92);
+}
+
+.labelLeft {
+  right: auto;
+  left: 8px;
+}
+
+.placeholder[data-tone='mountains'] {
+  background-image: linear-gradient(180deg, #e9b7c9 0%, #cba9c8 30%, #b0a6c2 48%, #ebe8f0 74%, #f4f2f7 100%);
+}
+.placeholder[data-tone='mountains']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #a49fbb, #7f7a99);
+  clip-path: polygon(0 100%, 0 72%, 16% 46%, 27% 58%, 50% 20%, 66% 52%, 81% 36%, 100% 64%, 100% 100%);
+  opacity: 0.85;
+}
+.placeholder[data-tone='mountains']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, #f4f2f7);
+  clip-path: polygon(0 100%, 0 86%, 30% 74%, 55% 84%, 80% 72%, 100% 82%, 100% 100%);
+}
+
+.placeholder[data-tone='flowers'] {
+  background-color: #a9a7a2;
+  background-image:
+    radial-gradient(circle at 12% 86%, #f08bb6 0 7%, transparent 7.5%),
+    radial-gradient(circle at 26% 92%, #f4a3c4 0 8%, transparent 8.5%),
+    radial-gradient(circle at 43% 84%, #ec78a8 0 6%, transparent 6.5%),
+    radial-gradient(circle at 58% 94%, #f4a3c4 0 9%, transparent 9.5%),
+    radial-gradient(circle at 74% 86%, #f08bb6 0 7%, transparent 7.5%),
+    radial-gradient(circle at 90% 92%, #ec78a8 0 8%, transparent 8.5%),
+    linear-gradient(180deg, #8f8d88 0%, #b3b1ab 55%, #6f7a5c 100%);
+}
+
+.placeholder[data-tone='dogs'] {
+  background-color: #2b2825;
+  background-image:
+    radial-gradient(ellipse 15% 34% at 24% 58%, #14120f 0 90%, transparent 92%),
+    radial-gradient(ellipse 15% 36% at 50% 55%, #1c1916 0 90%, transparent 92%),
+    radial-gradient(ellipse 14% 32% at 77% 60%, #8b8474 0 90%, transparent 92%),
+    linear-gradient(135deg, #3a352f, #58504a 55%, #8a8377);
+}
+
+.placeholder[data-tone='landscape'] {
+  background-image:
+    radial-gradient(circle at 20% 62%, #f3a6c6 0 3%, transparent 3.5%),
+    radial-gradient(circle at 34% 66%, #f7b6d0 0 4%, transparent 4.5%),
+    radial-gradient(circle at 70% 64%, #f3a6c6 0 3.5%, transparent 4%),
+    linear-gradient(180deg, #b9d0da 0%, #dfe6d3 34%, #8ea877 35%, #647f55 100%);
+}
+
+.placeholder[data-tone='portrait'] {
+  background-color: #857b6f;
+  background-image:
+    radial-gradient(ellipse 52% 30% at 54% 104%, #34302c 0 96%, transparent 100%),
+    radial-gradient(ellipse 19% 17% at 50% 47%, #e8bfa2 0 96%, transparent 100%),
+    radial-gradient(ellipse 33% 36% at 50% 42%, #b9834f 0 96%, transparent 100%),
+    linear-gradient(160deg, #b7ab9b, #7a7166);
+}
+
+.placeholder[data-tone='cat'] {
+  background-image:
+    radial-gradient(ellipse 30% 26% at 50% 62%, #a39b90 0 96%, transparent 100%),
+    linear-gradient(160deg, #75736e, #444340);
+}
+.placeholder[data-tone='cat']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #a39b90;
+  clip-path: polygon(24% 48%, 30% 26%, 42% 44%, 58% 44%, 70% 26%, 76% 48%);
+}
+
+.placeholder[data-tone='window'] {
+  background-image: linear-gradient(180deg, #dcdcd8, #a4a4a0);
+  filter: grayscale(1);
+}
+.placeholder[data-tone='window']::before {
+  content: '';
+  position: absolute;
+  inset: 14% 22%;
+  border-radius: 22% / 16%;
+  background: linear-gradient(180deg, #f1f1ee 0 46%, #8b8b88 46% 100%);
+  box-shadow:
+    0 0 0 8px #1f1f1d,
+    0 0 0 14px #c4c4c0;
+}
+
+.placeholder[data-tone='lake'] {
+  background-image: linear-gradient(180deg, #e7a6c0 0%, #f0b8a8 34%, #7f8fb8 35%, #4a5a86 100%);
+}
+
+/* ── скотч ── */
+.tape {
+  position: absolute;
+  width: 86px;
+  height: 24px;
+  background: var(--tape);
+  clip-path: polygon(0 0, 100% 0, 98% 20%, 100% 40%, 98% 60%, 100% 80%, 98% 100%, 0 100%, 2% 80%, 0 60%, 2% 40%, 0 20%);
+  pointer-events: none;
+}
+.tl {
+  top: -8px;
+  left: -24px;
+  transform: rotate(-38deg);
+}
+.tr {
+  top: -8px;
+  right: -24px;
+  transform: rotate(38deg);
+}
+.bl {
+  bottom: -6px;
+  left: -24px;
+  transform: rotate(36deg);
+}
+.br {
+  bottom: -6px;
+  right: -24px;
+  transform: rotate(-36deg);
+}
+.top {
+  top: -14px;
+  left: 50%;
+  margin-left: -43px;
+  transform: rotate(-2deg);
+}
