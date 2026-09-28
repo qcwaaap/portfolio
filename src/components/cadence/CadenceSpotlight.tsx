@@ -22,13 +22,6 @@ const smooth = (t: number) => {
   return x * x * (3 - 2 * x);
 };
 
-/**
- * CADENCE — главный проект. Большая страница-разворот: мелом на чёрной бумаге нарисовано колесо.
- *   скролл          → колесо крутится (на desktop секция закреплена на время прокрутки)
- *   мышь            → колесо слегка смещается и подворачивается
- *   перетаскивание  → колесо можно раскрутить рукой, дальше оно крутится по инерции
- *   чем быстрее крутишь, тем выше rpm: стрелка на кольце и волна отвечают на скорость
- */
 export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
   const rootRef = useRef<HTMLElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
@@ -52,11 +45,11 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
     const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const desktop = window.matchMedia('(min-width: 821px)').matches;
 
-    // состояние вращения
+  
     const S = { scroll: 0, idle: 0, drag: 0, dragVel: 0, dragging: false, lastA: 0, lastT: 0, tilt: 0, tiltTarget: 0 };
     let angle = 0;
     let prevAngle = 0;
-    let ws = 0; // сглаженная угловая скорость, °/с
+    let ws = 0; 
     let rpm = BASE_RPM;
     let phase = 0;
     let last = performance.now();
@@ -86,7 +79,6 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
       prevAngle = angle;
       ws += (omega - ws) * (1 - Math.exp(-dt * 8));
 
-      // rpm: спокойные 87 в покое, растёт, когда колесо крутят быстро
       const target = BASE_RPM + 27 * smooth(Math.abs(ws) / 700);
       rpm += (target - rpm) * (1 - Math.exp(-dt * 5));
 
@@ -105,7 +97,6 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
       }
     };
 
-    // тикаем только когда секция видна
     let running = false;
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -125,7 +116,6 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
     paintWave(20);
     rpmEl.textContent = String(BASE_RPM);
 
-    // ── мышь: лёгкий наклон и сдвиг колеса ──
     const cleanups: Array<() => void> = [];
     if (fine && !reduced) {
       const qx = gsap.quickTo(host, 'x', { duration: 1, ease: 'power3' });
@@ -141,7 +131,6 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
       cleanups.push(() => window.removeEventListener('pointermove', onMove));
     }
 
-    // ── перетаскивание: можно раскрутить рукой ──
     const centerOf = () => {
       const r = wheel.getBoundingClientRect();
       return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
@@ -190,43 +179,42 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
     });
 
     // ── скролл: закрепление (desktop) и вращение колеса ──
-    const ctx = gsap.context(() => {
-      const q = gsap.utils.selector(root);
-      if (desktop) {
-        ScrollTrigger.create({
-          trigger: root,
-          start: 'top top',
-          end: '+=140%',
-          pin: true,
-          onUpdate: (self) => {
-            S.scroll = self.progress * 720;
-          },
-        });
-      } else {
-        ScrollTrigger.create({
-          trigger: root,
-          start: 'top bottom',
-          end: 'bottom top',
-          onUpdate: (self) => {
-            S.scroll = self.progress * 540;
-          },
-        });
-      }
+    // const ctx = gsap.context(() => {
+    //   const q = gsap.utils.selector(root);
+    //   if (desktop) {
+    //     ScrollTrigger.create({
+    //       trigger: root,
+    //       start: 'top top',
+    //       end: '+=140%',
+    //       pin: true,
+    //       onUpdate: (self) => {
+    //         S.scroll = self.progress * 720;
+    //       },
+    //     });
+    //   } else {
+    //     ScrollTrigger.create({
+    //       trigger: root,
+    //       start: 'top bottom',
+    //       end: 'bottom top',
+    //       onUpdate: (self) => {
+    //         S.scroll = self.progress * 540;
+    //       },
+    //     });
+    //   }
 
-      if (!reduced) {
-        const once = { trigger: root, start: 'top 72%', once: true };
-        gsap.from(q('[data-sheet]'), { y: 130, rotation: 5, opacity: 0, duration: 1.2, ease: 'power3.out', scrollTrigger: once });
-        gsap.from(q('[data-col] > *'), { y: 26, opacity: 0, duration: 0.8, stagger: 0.09, delay: 0.25, ease: 'power2.out', scrollTrigger: once });
-      }
-    }, root);
+    //   if (!reduced) {
+    //     const once = { trigger: root, start: 'top 72%', once: true };
+    //     gsap.from(q('[data-sheet]'), { y: 130, rotation: 5, opacity: 0, duration: 1.2, ease: 'power3.out', scrollTrigger: once });
+    //     gsap.from(q('[data-col] > *'), { y: 26, opacity: 0, duration: 0.8, stagger: 0.09, delay: 0.25, ease: 'power2.out', scrollTrigger: once });
+    //   }
+    // }, root);
 
     return () => {
-      io.disconnect();
-      gsap.ticker.remove(tick);
-      cleanups.forEach((fn) => fn());
-      ctx.revert();
-    };
-  }, []);
+    io.disconnect();
+    gsap.ticker.remove(tick);
+    cleanups.forEach((fn) => fn());
+      //ctx.revert();
+      };}, []);
 
   return (
     <section ref={rootRef} id="cadence" className={styles.cad} aria-labelledby="cadence-title">
