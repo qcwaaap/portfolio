@@ -5,14 +5,14 @@
 export type PhotoKey = 'mountains' | 'flowers' | 'dogs' | 'landscape' | 'portrait' | 'cat' | 'window' | 'lake';
 
 export const PHOTOS: Record<PhotoKey, { src: string | null; alt: string; label: string }> = {
-  mountains: { src: null, alt: 'Snowy mountains at dusk', label: 'photo: mountains' },
+  mountains: { src: '/images/mountains.jpg', alt: 'Mountains at dusk, seen from the road', label: 'photo: mountains' },
   flowers: { src: null, alt: 'Pink flowers along a grey wall', label: 'photo: flowers' },
   dogs: { src: null, alt: 'Three dogs looking out of a car window', label: 'photo: dogs' },
-  landscape: { src: null, alt: 'A green valley with blossoming trees', label: 'photo: landscape' },
+  landscape: { src: '/images/landscape.jpg', alt: 'A quiet street under pine trees at night', label: 'photo: landscape' },
   portrait: { src: null, alt: 'Portrait of Maria', label: 'photo: portrait' },
-  cat: { src: null, alt: 'A tabby cat', label: 'photo: cat' },
+  cat: { src: '/images/cat.jpg', alt: 'A black and white cat on a car, in a graffiti alley', label: 'photo: cat' },
   window: { src: null, alt: 'View from a plane window, black and white', label: 'photo: window' },
-  lake: { src: null, alt: 'A lake at sunset', label: 'photo: lake' },
+  lake: { src: '/images/lake.jpg', alt: 'A calm lake reflecting a cloudy sky at dusk', label: 'photo: lake' },
 };
 
 /** Картинки, которые лоадер дождётся перед показом сайта */

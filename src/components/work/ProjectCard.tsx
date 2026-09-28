@@ -60,11 +60,7 @@ export function ProjectCard({ project: p, hidden, onOpen, seed }: Props) {
             {p.id === 'cadence' && <CadencePulse />}
             <h3 className={styles.name}>{p.title}</h3>
             <p className={styles.short}>{p.short}</p>
-            <ul className={styles.tags}>
-              {p.tags.map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
+            <p className={styles.tags}>{p.tags.join('  ·  ')}</p>
             <Annotation text={p.annotation.text} dir={p.annotation.dir} seed={seed * 13 + 5} />
           </div>
         </div>

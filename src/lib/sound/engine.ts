@@ -12,8 +12,9 @@
  *   sound.tick()                 — трещotka свободного хода (колесо Cadence)
  *
  * Громкость каждого события небольшая и отличается на ±30-40%, чтобы звук не
- * повторялся механически. Эмбиент — два очень тихих детуненных тона плюс
- * редкие «капли» — заводится через несколько секунд после включения.
+ * повторялся механически. Эмбиент — тихий спокойный lo-fi house-луп (мягкий кик
+ * в половинном темпе, редкий хай-хэт, тёплые плывущие аккорды пэда) — целиком
+ * синтезирован, без единого сэмпла, и звучит фоном, не отвлекая.
  */
 
 type Ready = { ctx: AudioContext; master: GainNode; amb: GainNode };
@@ -83,51 +84,127 @@ function click(duration: number, gain: number, hp = 800) {
   src.start(t0);
 }
 
+const BPM = 92;
+const BEAT = 60 / BPM;
+const EIGHTH = BEAT / 2;
+
+// Am7 → Fmaj7 → Cmaj7 → G6, каждый аккорд держится 4 такта — медленно и спокойно.
+// Четыре голоса пэда не перезапускаются между аккордами, а плавно съезжают к новым нотам (портаменто),
+// поэтому смена аккорда не воспринимается как отдельный «удар», а просто как медленный дрейф.
+const CHORDS: readonly (readonly [number, number, number, number])[] = [
+  [110, 130.81, 164.81, 196],
+  [87.31, 110, 130.81, 164.81],
+  [130.81, 164.81, 196, 246.94],
+  [98, 123.47, 146.83, 164.81],
+];
+
+/** Мягкий синтезированный кик: короткое падение частоты + амплитудная огибающая. */
+function kick(ctx: AudioContext, out: AudioNode, t: number, gain: number) {
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(148, t);
+  osc.frequency.exponentialRampToValueAtTime(42, t + 0.11);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(gain, t + 0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+  osc.connect(g).connect(out);
+  osc.start(t);
+  osc.stop(t + 0.24);
+}
+
+/** Едва слышный закрытый хай-хэт: короткий отфильтрованный шум. */
+function hat(ctx: AudioContext, out: AudioNode, t: number, gain: number) {
+  const n = Math.floor(ctx.sampleRate * 0.05);
+  const buf = ctx.createBuffer(1, n, ctx.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < n; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / n);
+  const src = ctx.createBufferSource();
+  src.buffer = buf;
+  const filt = ctx.createBiquadFilter();
+  filt.type = 'highpass';
+  filt.frequency.value = 7200;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(gain, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.045);
+  src.connect(filt).connect(g).connect(out);
+  src.start(t);
+}
+
 function startAmbient() {
   const r = ready;
   if (!r || ambientStarted) return;
   ambientStarted = true;
   const { ctx, amb } = r;
 
-  const drone = (freq: number, detune: number, gain: number) => {
+  // ── тёплый пэд: 4 голоса через общий lowpass, очень тихо, долгая атака ──
+  const filt = ctx.createBiquadFilter();
+  filt.type = 'lowpass';
+  filt.frequency.value = 900;
+  filt.Q.value = 0.3;
+  const padOut = ctx.createGain();
+  padOut.gain.value = 0.055;
+  filt.connect(padOut).connect(amb);
+
+  const voices = CHORDS[0]!.map((freq, i) => {
     const osc = ctx.createOscillator();
-    osc.type = 'sine';
+    osc.type = i % 2 ? 'triangle' : 'sine';
     osc.frequency.value = freq;
-    osc.detune.value = detune;
+    osc.detune.value = (i - 1.5) * 4;
     const g = ctx.createGain();
-    g.gain.value = gain;
-    osc.connect(g).connect(amb);
+    g.gain.value = 0;
+    osc.connect(g).connect(filt);
     osc.start();
+    // очень медленный "вдох" громкости каждого голоса — пэд слегка дышит, а не стоит статично
+    g.gain.linearRampToValueAtTime(0.001, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(1, ctx.currentTime + rand(2.5, 4));
     return { osc, g };
-  };
-  const a = drone(96, -6, 0.5);
-  const b = drone(144.5, 5, 0.32);
+  });
 
-  // очень медленное «дыхание» громкости, чтобы дрон не звучал статично
-  let raf = 0;
-  let t = 0;
-  const breathe = () => {
-    t += 1 / 60;
-    a.g.gain.value = 0.4 + Math.sin(t * 0.11) * 0.12;
-    b.g.gain.value = 0.24 + Math.sin(t * 0.08 + 1.4) * 0.1;
-    raf = requestAnimationFrame(breathe);
-  };
-  breathe();
+  // ── лупер: классический lookahead-scheduler, чтобы ритм не плыл от лагов вкладки ──
+  let running = true;
+  let nextTime = ctx.currentTime + 0.1;
+  let step = 0; // восьмые доли, 8 на такт
+  let bar = 0;
+  let chordIdx = 0;
 
-  // редкие тихие «капли» лоу-фай мелодии
-  let dropTimer = window.setTimeout(function drop() {
-    if (enabled) {
-      const scale = [261.6, 293.7, 329.6, 392, 440, 523.3];
-      ping(scale[Math.floor(Math.random() * scale.length)]!, rand(1.4, 2.2), rand(0.02, 0.035), 'sine');
+  const scheduleStep = (t: number) => {
+    const beatOfBar = step % 8;
+
+    // кик в половинном темпе — на первую и третью долю такта, мягкий «пульс», а не диско
+    if (beatOfBar === 0 || beatOfBar === 4) kick(ctx, amb, t, rand(0.05, 0.07));
+
+    // хай-хэт только на слабых восьмых, не всегда — чтобы не звучать механически
+    if (beatOfBar % 2 === 1 && Math.random() < 0.65) hat(ctx, amb, t, rand(0.006, 0.012));
+
+    if (beatOfBar === 0) {
+      bar += 1;
+      if (bar % 4 === 0) {
+        chordIdx = (chordIdx + 1) % CHORDS.length;
+        const chord = CHORDS[chordIdx]!;
+        voices.forEach((v, i) => {
+          v.osc.frequency.cancelScheduledValues(t);
+          v.osc.frequency.setValueAtTime(v.osc.frequency.value, t);
+          v.osc.frequency.linearRampToValueAtTime(chord[i]!, t + BEAT * 3.2);
+        });
+      }
     }
-    dropTimer = window.setTimeout(drop, rand(3800, 7200));
-  }, rand(2000, 4000));
+    step += 1;
+  };
+
+  const lookahead = 0.1;
+  const timer = window.setInterval(() => {
+    if (!running) return;
+    while (nextTime < ctx.currentTime + lookahead) {
+      scheduleStep(nextTime);
+      nextTime += EIGHTH;
+    }
+  }, 25);
 
   ambientStop = () => {
-    cancelAnimationFrame(raf);
-    window.clearTimeout(dropTimer);
-    a.osc.stop();
-    b.osc.stop();
+    running = false;
+    window.clearInterval(timer);
+    voices.forEach((v) => v.osc.stop());
     ambientStarted = false;
     ambientStop = null;
   };

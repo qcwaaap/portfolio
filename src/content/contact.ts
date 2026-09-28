@@ -7,7 +7,7 @@ export type Contact = { id: string; label: string; href: string | null };
 
 export const CONTACTS: readonly Contact[] = [
   { id: 'github', label: 'github', href: 'https://github.com/qcwaaap' },
-  { id: 'telegram', label: 'telegram', href: null },
-  { id: 'email', label: 'email', href: null },
-  { id: 'linkedin', label: 'linkedin', href: null },
+  { id: 'telegram', label: 'telegram', href: 'https://t.me/l0w2key' },
+  { id: 'email', label: 'email', href: 'mailto:masikemokid@gmail.com' },
+  { id: 'linkedin', label: 'linkedin', href: 'https://www.linkedin.com/in/maria-nedbaylova-319274425' },
 ];
