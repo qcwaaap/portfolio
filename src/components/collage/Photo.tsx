@@ -7,20 +7,15 @@ type Tape = 'tl' | 'tr' | 'bl' | 'br' | 'top';
 type PhotoProps = {
   src?: string | null;
   alt: string;
-  /** подпись на заглушке */
   label: string;
   tone: PhotoTone;
-  /** соотношение сторон, например '5 / 4' */
   ratio?: string;
   frame?: 'plain' | 'polaroid';
   tapes?: readonly Tape[];
-  /** текст на кастомном курсоре */
   cursor?: string | null;
   /** свой контент вместо картинки/заглушки (например, нарисованный скриншот проекта) */
   children?: ReactNode;
-  /** false — без подъёма и зума при наведении (для увеличенного вида) */
   interactive?: boolean;
-  /** с какой стороны подпись заглушки (чтобы не прятать её под стикерами) */
   labelSide?: 'left' | 'right';
 };
 

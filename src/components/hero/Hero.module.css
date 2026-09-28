@@ -16,7 +16,6 @@
   white-space: nowrap;
 }
 
-/* ── общий стиль всех «нарисованных» svg ── */
 .titleSvg,
 .dogSvg,
 .bikeSvg,
@@ -72,7 +71,7 @@
   font-size: 13px;
 }
 
-/* ── навигация и мета ── */
+/*  наигация и мета */
 .nav {
   position: absolute;
   top: 3.2%;
@@ -115,7 +114,7 @@
   letter-spacing: 0.02em;
 }
 
-/* ── композиция коллажа: desktop ── */
+/* композиция */
 .mountains {
   left: -2.5vw;
   top: 15%;
@@ -234,7 +233,7 @@
   margin: 6px 0 0 auto;
 }
 
-/* ── мобильная версия: другая композиция, а не столбик ── */
+/* мобильная версия */
 @media (max-width: 820px) {
   .hero {
     min-height: 720px;
