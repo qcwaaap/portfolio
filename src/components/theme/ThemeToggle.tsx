@@ -55,7 +55,6 @@ export function ThemeToggle() {
       <span className={styles.icon} aria-hidden>
         {dark ? '☾' : '☀'}
       </span>
-      {theme ? (dark ? 'DARK' : 'LIGHT') : ''}
     </button>
   );
 }
