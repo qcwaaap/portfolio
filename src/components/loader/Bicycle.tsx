@@ -1,5 +1,6 @@
 import { forwardRef, memo } from 'react';
 import { n3, rng, scribbleArrow, scribbleCircle, scribbleLine, scribblePoly, type Pt } from '@/lib/sketch';
+import { useT } from '@/i18n/LocaleProvider';
 import styles from './Bicycle.module.css';
 
 /**
@@ -157,6 +158,7 @@ type BicycleProps = { className?: string };
 
 export const Bicycle = memo(
   forwardRef<SVGSVGElement, BicycleProps>(function Bicycle({ className }, ref) {
+    const t = useT();
     const ground = scribblePoly(
       [
         [60, 394],
@@ -178,7 +180,7 @@ export const Bicycle = memo(
         className={`${styles.svg} ${className ?? ''}`}
         viewBox="-10 40 660 380"
         role="img"
-        aria-label="Hand-drawn bicycle"
+        aria-label={t.loader.bikeAria}
       >
         {/* земля — синий маркер, как в референсе; не двигается вместе с великом */}
         <path d={ground} className={styles.ground} strokeWidth={8} pathLength={1} data-draw="" data-at="0" data-dur="0.07" />

@@ -7,7 +7,8 @@ import { Item, type Enter } from '@/components/collage/Item';
 import { Photo } from '@/components/collage/Photo';
 import { TornEdge } from '@/components/collage/TornEdge';
 import { useParallax } from '@/components/collage/useParallax';
-import { PHOTOS } from '@/content/photos';
+import { usePhoto } from '@/i18n/hooks';
+import { useT } from '@/i18n/LocaleProvider';
 import { HeartDoodle, SpiralDoodle } from './Doodles';
 import { Skills } from './Skills';
 import styles from './About.module.css';
@@ -85,32 +86,35 @@ export function About() {
     return () => ctx.revert();
   }, []);
 
+  const t = useT();
+  const photo = usePhoto();
+
   return (
-    <section ref={rootRef} id="about" className={styles.about} aria-label="About and skills">
+    <section ref={rootRef} id="about" className={styles.about} aria-label={t.about.aria}>
       <TornEdge seed={8} tone="var(--paper)" />
 
       {/* ── ABOUT ── */}
       <h2 className={styles.head1} data-reveal="">
-        about me
+        {t.about.head}
       </h2>
 
       <Item className={styles.portrait} depth={0.6} rotate={-4} enter="left" z={2}>
-        <Photo {...PHOTOS.portrait} tone="portrait" ratio="4 / 5" tapes={['tr', 'bl']} />
+        <Photo {...photo('portrait')} tone="portrait" ratio="4 / 5" tapes={['tr', 'bl']} />
       </Item>
       <Item className={styles.cat} depth={1} rotate={5} enter="bottom" z={4}>
-        <Photo {...PHOTOS.cat} tone="cat" ratio="3 / 4" tapes={['tl']} />
+        <Photo {...photo('cat')} tone="cat" ratio="3 / 4" tapes={['tl']} />
       </Item>
       <Item className={styles.spiral} depth={0.7} rotate={-8}>
         <SpiralDoodle className={styles.doodleSvg} />
       </Item>
 
       <div className={styles.text} data-reveal="">
-        <p>I build web applications and enjoy figuring out what happens behind the interface.</p>
-        <p className={styles.focus}>Currently focused on:</p>
+        <p>{t.about.intro}</p>
+        <p className={styles.focus}>{t.about.focus}</p>
         <ul>
-          <li>Frontend / Fullstack</li>
-          <li>React / TypeScript</li>
-          <li>Python / Go</li>
+          {t.about.focusItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
         </ul>
       </div>
 
@@ -120,26 +124,26 @@ export function About() {
 
       <Item className={styles.note} depth={0.4} rotate={-6}>
         <p className={styles.noteText} data-reveal="">
-          also love: bikes, dogs, good food and weird internet.
+          {t.about.also}
         </p>
       </Item>
 
       {/* ── SKILLS ── */}
       <h2 id="skills" className={styles.head2} data-reveal="">
-        skills
+        {t.about.skillsHead}
       </h2>
       <div className={styles.skills}>
         <Skills />
       </div>
 
       <Item className={styles.window} depth={0.9} rotate={-7} enter="right" z={2}>
-        <Photo {...PHOTOS.window} tone="window" ratio="4 / 3" tapes={['tl', 'br']} />
+        <Photo {...photo('window')} tone="window" ratio="4 / 3" tapes={['tl', 'br']} />
       </Item>
       <Item className={styles.windowNote} depth={0.5} rotate={-4}>
         <p className={styles.noteText} data-reveal="">
-          different places
+          {t.about.windowNote[0]}
           <br />
-          same internet
+          {t.about.windowNote[1]}
         </p>
       </Item>
     </section>

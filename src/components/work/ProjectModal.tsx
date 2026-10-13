@@ -6,6 +6,7 @@ import { Photo } from '@/components/collage/Photo';
 import { getLenis } from '@/components/smooth/lenisStore';
 import { sound } from '@/lib/sound/engine';
 import type { Project } from '@/content/projects';
+import { useT } from '@/i18n/LocaleProvider';
 import { ProjectArt } from './ProjectArt';
 import styles from './ProjectModal.module.css';
 
@@ -25,6 +26,7 @@ function originOf(id: string): Origin | null {
 const TAG_TONES = ['#f7c6da', '#d8f27a', '#bcd3f7', '#f6e58a'];
 
 export function ProjectModal({ project: p, onClosed }: Props) {
+  const tx = useT();
   const rootRef = useRef<HTMLDivElement>(null);
   const visualRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -136,7 +138,7 @@ export function ProjectModal({ project: p, onClosed }: Props) {
           <div className={`${styles.paper} paper-surface`} data-paper="" />
 
           <button ref={closeRef} type="button" className={styles.close} onClick={close} data-reveal="">
-            close <span aria-hidden>✕</span>
+            {tx.work.close} <span aria-hidden>✕</span>
           </button>
 
           <div className={styles.content}>
@@ -183,7 +185,7 @@ export function ProjectModal({ project: p, onClosed }: Props) {
                     </a>
                   ))
                 ) : (
-                  <span className={styles.soon}>links coming soon</span>
+                  <span className={styles.soon}>{tx.work.soon}</span>
                 )}
               </div>
             </div>
@@ -192,7 +194,7 @@ export function ProjectModal({ project: p, onClosed }: Props) {
           <div className={styles.gallery} data-reveal="">
             {[0, 1, 2].map((i) => (
               <div key={i} className={styles.shot} style={{ transform: `rotate(${[-1.6, 1.2, -0.8][i]}deg)` }}>
-                <span>screenshot</span>
+                <span>{tx.work.screenshot}</span>
               </div>
             ))}
           </div>

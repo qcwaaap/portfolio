@@ -9,7 +9,8 @@ import { Photo } from '@/components/collage/Photo';
 import { TornEdge } from '@/components/collage/TornEdge';
 import { useParallax } from '@/components/collage/useParallax';
 import { CONTACTS } from '@/content/contact';
-import { PHOTOS } from '@/content/photos';
+import { usePhoto } from '@/i18n/hooks';
+import { useT } from '@/i18n/LocaleProvider';
 import styles from './Contact.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -63,13 +64,16 @@ export function Contact() {
     return () => ctx.revert();
   }, []);
 
+  const t = useT();
+  const photo = usePhoto();
+
   return (
-    <section ref={rootRef} id="contact" className={styles.contact} aria-label="Contact">
+    <section ref={rootRef} id="contact" className={styles.contact} aria-label={t.contact.aria}>
       <TornEdge seed={15} tone="var(--contact-bg)" />
 
       <h2 className={styles.connect} data-connect="">
-        <span>let&apos;s</span>
-        <span>connect</span>
+        <span>{t.contact.connect[0]}</span>
+        <span>{t.contact.connect[1]}</span>
       </h2>
 
       <Item className={styles.heart} depth={0.5} rotate={8}>
@@ -97,7 +101,7 @@ export function Contact() {
       </ul>
 
       <Item className={styles.lake} depth={0.9} rotate={4} enter="right" z={2}>
-        <Photo {...PHOTOS.lake} tone="lake" ratio="4 / 3" frame="polaroid" tapes={['top']} />
+        <Photo {...photo('lake')} tone="lake" ratio="4 / 3" frame="polaroid" tapes={['top']} />
       </Item>
 
       <Item className={styles.dog} depth={0.7} rotate={-3}>
@@ -106,9 +110,9 @@ export function Contact() {
 
       <footer className={styles.footer}>
         <TornEdge seed={21} tone="#2b2a27" />
-        <p className={styles.copy}>© 2026 Maria Nedbailova</p>
+        <p className={styles.copy}>{t.contact.copy}</p>
         <a href="#top" className={styles.top}>
-          back to top ↑
+          {t.contact.top}
         </a>
         <div className={styles.checker} aria-hidden />
       </footer>

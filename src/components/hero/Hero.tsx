@@ -6,7 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Item, type Enter } from '@/components/collage/Item';
 import { Photo } from '@/components/collage/Photo';
 import { StarDoodle } from '@/components/loader/Doodles';
-import { PHOTOS } from '@/content/photos';
+import { usePhoto } from '@/i18n/hooks';
+import { useT } from '@/i18n/LocaleProvider';
 import { BikeDoodle } from './BikeDoodle';
 import { DogDoodle } from './DogDoodle';
 import { InternetNote, PinkLoop, ScrollSticker } from './Doodles';
@@ -178,26 +179,29 @@ export function Hero({ revealed }: { revealed: boolean }) {
     else tl.play();
   }, [revealed]);
 
-  return (
-    <section ref={rootRef} className={styles.hero} id="top" aria-label="Intro">
-      <h1 className={styles.srOnly}>Maria Nedbailova — fullstack developer</h1>
+  const t = useT();
+  const photo = usePhoto();
 
-      <nav className={styles.nav} aria-label="Main" data-fade="" data-at="3" data-dur="0.6">
-        <a href="#top" aria-label="Home" className={styles.navStar}>
+  return (
+    <section ref={rootRef} className={styles.hero} id="top" aria-label={t.hero.aria}>
+      <h1 className={styles.srOnly}>{t.hero.heading}</h1>
+
+      <nav className={styles.nav} aria-label={t.hero.navAria} data-fade="" data-at="3" data-dur="0.6">
+        <a href="#top" aria-label={t.hero.home} className={styles.navStar}>
           <StarDoodle className={styles.navStarSvg} seed={2} at={3} dur={0.01} />
         </a>
-        <a href="#work">work</a>
-        <a href="#about">about</a>
-        <a href="#contact">contact</a>
+        <a href="#work">{t.hero.work}</a>
+        <a href="#about">{t.hero.about}</a>
+        <a href="#contact">{t.hero.contact}</a>
       </nav>
       <p className={styles.meta} data-fade="" data-at="3" data-dur="0.6">
-        SPB / REMOTE
+        {t.place}
         <br />
         2026
       </p>
 
       <Item className={styles.mountains} depth={0.5} rotate={-3.5} enter="left" z={2}>
-        <Photo {...PHOTOS.mountains} eager tone="mountains" ratio="5 / 4" tapes={['tr', 'bl']} />
+        <Photo {...photo('mountains')} eager tone="mountains" ratio="5 / 4" tapes={['tr', 'bl']} />
       </Item>
 
       <Item className={styles.title} depth={0.3} z={3}>
@@ -209,7 +213,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
 
       <Item className={styles.tagline} depth={0.4} rotate={-2}>
         <p className={styles.taglineText} data-fade="" data-at="2.7" data-dur="0.6">
-          fullstack developer
+          {t.hero.tagline}
         </p>
       </Item>
       <Item className={styles.loop} depth={0.4} z={3}>
@@ -233,13 +237,13 @@ export function Hero({ revealed }: { revealed: boolean }) {
         <InternetNote />
       </Item>
       <Item className={styles.flowers} depth={0.8} rotate={5} enter="top" z={2}>
-        <Photo {...PHOTOS.flowers} eager tone="flowers" ratio="4 / 3" tapes={['top']} />
+        <Photo {...photo('flowers')} eager tone="flowers" ratio="4 / 3" tapes={['top']} />
       </Item>
       <Item className={styles.dogs} depth={1} rotate={-2} enter="right" z={3}>
-        <Photo {...PHOTOS.dogs} tone="dogs" ratio="4 / 3" frame="polaroid" tapes={['tl', 'tr']} />
+        <Photo {...photo('dogs')} tone="dogs" ratio="4 / 3" frame="polaroid" tapes={['tl', 'tr']} />
       </Item>
       <Item className={styles.landscape} depth={1.2} rotate={3.5} enter="bottom" z={4}>
-        <Photo {...PHOTOS.landscape} tone="landscape" ratio="4 / 3" tapes={['tr', 'bl']} labelSide="left" />
+        <Photo {...photo('landscape')} tone="landscape" ratio="4 / 3" tapes={['tr', 'bl']} labelSide="left" />
       </Item>
       <Item className={styles.sticker} depth={1.1} rotate={-7} enter="pop" z={5}>
         <ScrollSticker />

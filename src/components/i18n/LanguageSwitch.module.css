@@ -1,0 +1,43 @@
+.group {
+  position: fixed;
+  left: calc(clamp(14px, 2.4vw, 28px) + 58px);
+  bottom: clamp(14px, 2.4vw, 28px);
+  z-index: 1800;
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid rgb(var(--ink-rgb) / 0.14);
+  border-radius: 999px;
+  box-shadow: 0 6px 16px -8px rgb(var(--shadow-rgb) / 0.4);
+  backdrop-filter: blur(3px);
+}
+
+.btn {
+  min-width: 34px;
+  padding: 6px 9px;
+  font-family: var(--font-mono, ui-monospace), monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.btn:hover {
+  color: var(--ink);
+}
+
+.active {
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.active:hover {
+  color: var(--paper);
+}

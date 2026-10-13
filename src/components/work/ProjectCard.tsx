@@ -1,5 +1,6 @@
 import { Photo } from '@/components/collage/Photo';
 import type { Project } from '@/content/projects';
+import { useT } from '@/i18n/LocaleProvider';
 import { Annotation } from './Annotation';
 import { CadencePulse } from './CadencePulse';
 import { ProjectArt } from './ProjectArt';
@@ -15,6 +16,7 @@ type Props = {
 
 /** Один проект на «столе»: фотография с лентой-названием, под ней подпись и пометка от руки. */
 export function ProjectCard({ project: p, hidden, onOpen, seed }: Props) {
+  const tx = useT();
   const open = () => onOpen(p.id);
   return (
     <article
@@ -23,7 +25,7 @@ export function ProjectCard({ project: p, hidden, onOpen, seed }: Props) {
       data-cursor="OPEN"
       role="button"
       tabIndex={0}
-      aria-label={`Open project ${p.title}`}
+      aria-label={tx.work.openProject.replace('{title}', p.title)}
       onClick={open}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {

@@ -5,7 +5,8 @@ import gsap from 'gsap';
 import { scribbleLine } from '@/lib/sketch';
 import { Bicycle } from './Bicycle';
 import { StarDoodle } from './Doodles';
-import { STAGES, smoothstep, stageAt, timeToProgress, wheelSpeed } from './loaderMath';
+import { useT } from '@/i18n/LocaleProvider';
+import { smoothstep, stageAt, timeToProgress, wheelSpeed } from './loaderMath';
 import { TEAR } from './tear';
 import { useAssetProgress } from './useAssetProgress';
 import styles from './Loader.module.css';
@@ -32,6 +33,13 @@ export function Loader({ assets, minDuration = 4200, onExitStart, onComplete }: 
   const barRef = useRef<SVGPathElement>(null);
   const rpmRef = useRef<HTMLSpanElement>(null);
   const captionRef = useRef<HTMLParagraphElement>(null);
+
+  const t = useT();
+  // подпись меняется императивно (в rAF), поэтому актуальный словарь держим в ref
+  const stagesRef = useRef(t.loader.stages);
+  useEffect(() => {
+    stagesRef.current = t.loader.stages;
+  });
 
   const [done, setDone] = useState(false);
   const assetProgress = useAssetProgress(assets);
@@ -157,7 +165,7 @@ export function Loader({ assets, minDuration = 4200, onExitStart, onComplete }: 
         const stage = stageAt(shown);
         if (stage !== lastStage) {
           lastStage = stage;
-          caption.textContent = STAGES[stage]!.label;
+          caption.textContent = stagesRef.current[stage] ?? '';
           if (!reduced) gsap.fromTo(caption, { y: 6, opacity: 0 }, { y: 0, opacity: 1, duration: 0.25, overwrite: true });
         }
 
@@ -188,14 +196,14 @@ export function Loader({ assets, minDuration = 4200, onExitStart, onComplete }: 
   if (done) return null;
 
   return (
-    <div ref={rootRef} className={styles.root} data-loader="" role="status" aria-label="Loading">
+    <div ref={rootRef} className={styles.root} data-loader="" role="status" aria-label={t.loader.aria}>
       <div className={styles.shadow} />
       <div className={styles.edge} style={{ clipPath: TEAR.edge }} />
       <div className={`${styles.sheet} paper-surface`} style={{ clipPath: TEAR.sheet }} />
 
       <StarDoodle className={styles.starInk} seed={3} at={0.03} />
       <p className={styles.tr} data-fade="" data-at="0.05" data-dur="0.05">
-        SPB / REMOTE
+        {t.place}
         <br />
         2026
       </p>
@@ -210,7 +218,7 @@ export function Loader({ assets, minDuration = 4200, onExitStart, onComplete }: 
 
       <div className={styles.scrap} data-fade="" data-at="0.02" data-dur="0.06">
         <p ref={captionRef} className={styles.caption}>
-          {STAGES[0].label}
+          {t.loader.stages[0]}
         </p>
         <p className={styles.pctRow} aria-hidden>
           <span ref={pctRef} className={styles.pct}>
@@ -223,7 +231,7 @@ export function Loader({ assets, minDuration = 4200, onExitStart, onComplete }: 
           <path ref={barRef} d={BAR} pathLength={1} className={styles.bar} />
         </svg>
         <p className={styles.rpm}>
-          rear wheel: <span ref={rpmRef}>0</span> rpm
+          {t.loader.rpmBefore} <span ref={rpmRef}>0</span> {t.loader.rpmAfter}
         </p>
       </div>
     </div>

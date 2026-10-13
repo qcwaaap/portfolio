@@ -1,4 +1,5 @@
 import { n3, scribbleArrow, scribbleCircle, scribbleEllipse, scribbleLine, type Pt } from '@/lib/sketch';
+import { useT } from '@/i18n/LocaleProvider';
 import styles from './Hero.module.css';
 
 const draw = (at: number, dur: number) => ({ 'data-draw': '', 'data-at': n3(at), 'data-dur': n3(dur), pathLength: 1 }) as const;
@@ -25,14 +26,15 @@ export function PinkLoop() {
 
 /** «currently somewhere on the internet» + глобус и стрелка. */
 export function InternetNote() {
+  const t = useT();
   const globe = { cx: 118, cy: 62, r: 16 };
   const arrowA = scribbleArrow([104, 44], [92, 34], [80, 38], 52, 7);
   const line = scribbleLine([108, 50], [86, 40], 53, { wobble: 0.6 });
   return (
     <svg className={styles.noteSvg} viewBox="0 0 160 84" aria-hidden>
       <g data-fade="" data-at="3.2" data-dur="0.5">
-        <text x={4} y={16} transform="rotate(-8 4 16)">currently somewhere</text>
-        <text x={26} y={34} transform="rotate(-8 26 34)">on the internet</text>
+        <text x={4} y={16} transform="rotate(-8 4 16)">{t.hero.internet[0]}</text>
+        <text x={26} y={34} transform="rotate(-8 26 34)">{t.hero.internet[1]}</text>
       </g>
       <g data-fade="" data-at="3.5" data-dur="0.4">
         <path d={scribbleCircle(globe.cx, globe.cy, globe.r, 61, { sweep: 1.06, jitter: 0.02 })} strokeWidth={1.8} />
@@ -47,6 +49,7 @@ export function InternetNote() {
 
 /** Зелёный стикер «scroll down» со стрелкой вниз. */
 export function ScrollSticker() {
+  const t = useT();
   const shaft = scribbleLine([28, 6], [30, 50], 71, { wobble: 1.2, overshoot: 2 });
   const head: Pt[] = [
     [16, 38],
@@ -54,11 +57,11 @@ export function ScrollSticker() {
     [44, 36],
   ];
   return (
-    <a href="#work" className={styles.stickerLink} aria-label="Scroll down">
+    <a href="#work" className={styles.stickerLink} aria-label={t.hero.scrollAria}>
       <span className={styles.stickerText}>
-        scroll
+        {t.hero.scroll[0]}
         <br />
-        down
+        {t.hero.scroll[1]}
       </span>
       <svg viewBox="0 0 60 60" className={styles.stickerArrow} aria-hidden>
         <path d={shaft} strokeWidth={3.4} />

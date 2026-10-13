@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { PRELOAD } from '@/content/photos';
 import { Cursor } from './cursor/Cursor';
 import { RoamingDog } from './dog/RoamingDog';
+import { LanguageSwitch } from './i18n/LanguageSwitch';
 import { ThemeToggle } from './theme/ThemeToggle';
 import { SoundToggle } from './sound/SoundToggle';
 import { useUiSounds } from './sound/useUiSounds';
@@ -31,6 +32,7 @@ export function Experience() {
       <Cursor />
       <RoamingDog enabled={ready} />
       <ThemeToggle />
+      <LanguageSwitch />
       <SoundToggle />
       <main>
         <Hero revealed={revealed} />

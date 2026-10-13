@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useT } from '@/i18n/LocaleProvider';
 import styles from './ThemeToggle.module.css';
 
 type Theme = 'light' | 'dark';
@@ -15,6 +16,7 @@ function current(): Theme {
 }
 
 export function ThemeToggle() {
+  const t = useT();
   // null до гидрации: иконка не мигает не той темой
   const [theme, setTheme] = useState<Theme | null>(null);
 
@@ -49,7 +51,7 @@ export function ThemeToggle() {
       className={styles.btn}
       onClick={toggle}
       aria-pressed={dark}
-      aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
+      aria-label={dark ? t.controls.toLight : t.controls.toDark}
      
     >
       <span className={styles.icon} aria-hidden>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useT } from '@/i18n/LocaleProvider';
 import gsap from 'gsap';
 import { HeartDoodle } from '@/components/about/Doodles';
 import { scribbleCircle, scribbleCurve, scribblePoly, type Pt } from '@/lib/sketch';
@@ -47,6 +48,7 @@ const rand = (a: number, b: number) => a + Math.random() * (b - a);
  * Для проверки без ожидания: window.dispatchEvent(new Event('dog:spawn')) в консоли браузера.
  */
 export function RoamingDog({ enabled }: { enabled: boolean }) {
+  const t = useT();
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const heartRef = useRef<HTMLSpanElement>(null);
@@ -279,7 +281,7 @@ export function RoamingDog({ enabled }: { enabled: boolean }) {
         <HeartDoodle color="var(--pink)" />
       </span>
       <span ref={bubbleRef} className={styles.bubble}>
-        woof!
+        {t.dog}
       </span>
     </div>
   );

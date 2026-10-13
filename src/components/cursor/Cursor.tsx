@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { useT } from '@/i18n/LocaleProvider';
 import styles from './Cursor.module.css';
 
 const ACID = '#c9f13b';
@@ -22,6 +23,12 @@ const label = (text: string): State => ({ key: `label:${text}`, scale: 1, bg: AC
  * На тач-устройствах не подключается вообще.
  */
 export function Cursor() {
+  const t = useT();
+  // подписи на текущем языке; эффект один на всё время жизни, поэтому читаем через ref
+  const labelsRef = useRef(t.cursor);
+  useEffect(() => {
+    labelsRef.current = t.cursor;
+  });
   const rootRef = useRef<HTMLDivElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLSpanElement>(null);
@@ -72,7 +79,7 @@ export function Cursor() {
       const next = resolve(target);
       if (next.key === state.key) return;
       state = next;
-      text.textContent = next.text;
+      text.textContent = labelsRef.current[next.text] ?? next.text;
       gsap.to(text, { opacity: next.text ? 1 : 0, duration: 0.2, delay: next.text ? 0.08 : 0, overwrite: true });
       apply();
     };

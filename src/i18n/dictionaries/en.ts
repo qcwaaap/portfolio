@@ -1,0 +1,113 @@
+import type { ProjectId } from '@/content/projects';
+import type { PhotoKey } from '@/content/photos';
+
+type ProjectText = { short: string; long: string; tags: string[]; annotation: string };
+
+export const en = {
+  meta: {
+    title: 'Maria Nedbailova — fullstack developer',
+    description: 'React / TypeScript / Python / Go',
+  },
+  place: 'SPB / REMOTE',
+  loader: {
+    aria: 'Loading',
+    bikeAria: 'Hand-drawn bicycle',
+    stages: ['unfolding the bike', 'warming up the back wheel', 'pedalling a bit harder', 'nearly there', 'go'],
+    rpmBefore: 'rear wheel:',
+    rpmAfter: 'rpm',
+  },
+  cursor: { OPEN: 'OPEN', VIEW: 'VIEW', PET: 'PET', SPIN: 'SPIN' } as Record<string, string>,
+  hero: {
+    aria: 'Intro',
+    heading: 'Maria Nedbailova — fullstack developer',
+    navAria: 'Main',
+    home: 'Home',
+    work: 'work',
+    about: 'about',
+    contact: 'contact',
+    tagline: 'fullstack developer',
+    internet: ['currently somewhere', 'on the internet'] as [string, string],
+    scrollAria: 'Scroll down',
+    scroll: ['scroll', 'down'] as [string, string],
+  },
+  work: {
+    heading: 'selected work',
+    listAria: 'Projects',
+    openProject: 'Open project {title}',
+    close: 'close',
+    soon: 'links coming soon',
+    screenshot: 'screenshot',
+  },
+  cadence: {
+    kicker: 'featured project',
+    blurbExtra: 'The rhythm of your pedalling sets the tempo.',
+    hint: 'drag the wheel',
+    wheelAria: 'Hand-drawn bicycle wheel, spins with scroll',
+    open: 'open project ↗',
+  },
+  about: {
+    aria: 'About and skills',
+    head: 'about me',
+    intro: 'I build web applications and enjoy figuring out what happens behind the interface.',
+    focus: 'Currently focused on:',
+    focusItems: ['Frontend / Fullstack', 'React / TypeScript', 'Python / Go'],
+    also: 'also love: bikes, dogs, good food and weird internet.',
+    skillsHead: 'skills',
+    windowNote: ['different places', 'same internet'] as [string, string],
+    skillTitles: { frontend: 'FRONTEND', backend: 'BACKEND', tools: 'TOOLS' } as Record<string, string>,
+  },
+  contact: {
+    aria: 'Contact',
+    connect: ["let's", 'connect'] as [string, string],
+    copy: '© 2026 Maria Nedbailova',
+    top: 'back to top ↑',
+  },
+  controls: {
+    soundOn: 'Turn ambient sound on',
+    soundOff: 'Turn ambient sound off',
+    on: 'ON',
+    off: 'OFF',
+    toLight: 'Switch to light theme',
+    toDark: 'Switch to dark theme',
+    language: 'Language',
+  },
+  dog: 'woof!',
+  photos: {
+    mountains: { alt: 'Mountains at dusk, seen from the road', label: 'photo: mountains' },
+    flowers: { alt: 'Pink flowers along a grey wall', label: 'photo: flowers' },
+    dogs: { alt: 'Three dogs looking out of a car window', label: 'photo: dogs' },
+    landscape: { alt: 'A quiet street under pine trees at night', label: 'photo: landscape' },
+    portrait: { alt: 'Portrait of Maria', label: 'photo: portrait' },
+    cat: { alt: 'A black and white cat on a car, in a graffiti alley', label: 'photo: cat' },
+    window: { alt: 'View from a plane window, black and white', label: 'photo: window' },
+    lake: { alt: 'A calm lake reflecting a cloudy sky at dusk', label: 'photo: lake' },
+  } as Record<PhotoKey, { alt: string; label: string }>,
+  projects: {
+    cadence: {
+      short: 'A tool for selecting music based on cycling cadence.',
+      long: 'A tool that picks music to match your cycling cadence: the rhythm of your pedalling sets the tempo, and the app finds tracks that fit it through the Spotify API, using algorithms to match and sequence them. Written in Go. Hardware sensors are the next step.',
+      tags: ['Go', 'Spotify API', 'Algorithms', 'Cycling'],
+      annotation: '+ future hardware',
+    },
+    cardizel: {
+      short: 'Commercial website for a furniture brand. Full frontend + backend.',
+      long: 'A commercial website for a furniture brand: a React frontend with its own backend and REST API. The backend was adapted to PHP because of hosting constraints.',
+      tags: ['React', 'Node.js', 'PHP', 'REST API'],
+      annotation: 'client project',
+    },
+    todo: {
+      short: 'Production practice app with clean architecture and async.',
+      long: 'A practice app for working with clean architecture and async Python: FastAPI routes call services, services work through a UnitOfWork on top of SQLAlchemy, and dependencies are wired with dependency injection.',
+      tags: ['Python', 'FastAPI', 'SQLAlchemy', 'Dependency Injection', 'UnitOfWork'],
+      annotation: 'architecture',
+    },
+    tamagochi: {
+      short: '3D pet project with Three.js and React.',
+      long: 'A 3D pet project: a little tamagochi creature living in a Three.js scene, rendered through React.',
+      tags: ['React', 'Three.js', 'JavaScript', '3D'],
+      annotation: '3D / interactive',
+    },
+  } as Record<ProjectId, ProjectText>,
+};
+
+export type Dictionary = typeof en;

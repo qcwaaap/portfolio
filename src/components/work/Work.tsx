@@ -6,7 +6,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CadenceSpotlight } from '@/components/cadence/CadenceSpotlight';
 import { TornEdge } from '@/components/collage/TornEdge';
-import { PROJECTS, type ProjectId } from '@/content/projects';
+import type { ProjectId } from '@/content/projects';
+import { useProjects } from '@/i18n/hooks';
+import { useT } from '@/i18n/LocaleProvider';
 import { scribbleArrow, scribbleLine } from '@/lib/sketch';
 import { ProjectCard } from './ProjectCard';
 import { ProjectModal } from './ProjectModal';
@@ -20,6 +22,8 @@ const DOWN = scribbleArrow([10, 2], [8, 30], [12, 58], 21, 7);
 const data = (node: Element) => (node as HTMLElement).dataset;
 
 export function Work() {
+  const tx = useT();
+  const PROJECTS = useProjects();
   const rootRef = useRef<HTMLElement>(null);
   const [openId, setOpenId] = useState<ProjectId | null>(null);
   const openProject = PROJECTS.find((p) => p.id === openId) ?? null;
@@ -77,13 +81,13 @@ export function Work() {
         <TornEdge seed={3} />
 
         <h2 id="work-title" className={styles.heading} data-work-head="">
-          selected work
+          {tx.work.heading}
           <svg className={styles.underline} viewBox="0 0 210 14" aria-hidden data-work-line="">
             <path d={UNDERLINE} pathLength={1} />
           </svg>
         </h2>
 
-        <div className={styles.index} data-work-index="" aria-label="Projects">
+        <div className={styles.index} data-work-index="" aria-label={tx.work.listAria}>
           {PROJECTS.map((p) => (
             <button key={p.id} type="button" className={styles.indexBtn} data-cursor="OPEN" onClick={() => setOpenId(p.id)}>
               {p.index}

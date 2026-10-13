@@ -25,8 +25,10 @@
   --tex-mottle: url('/textures/mottle.png');
   color-scheme: light;
 
-  --font-hand: 'Gaegu';
-  --font-mono: 'IBM Plex Mono';
+  /* Gaegu рисует только латиницу и корейский: кириллицу берёт Caveat, иероглифы — Ma Shan Zheng */
+  --font-hand: 'Gaegu', 'Caveat', 'Ma Shan Zheng';
+  /* у IBM Plex Mono нет иероглифов — подставляем системные */
+  --font-mono: 'IBM Plex Mono', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC';
 }
 
 /* Тёмная тема: «ночная бумага». Ручной выбор (data-theme) главнее системной настройки. */

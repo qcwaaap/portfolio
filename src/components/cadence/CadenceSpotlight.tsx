@@ -4,7 +4,8 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TornEdge } from '@/components/collage/TornEdge';
-import { PROJECTS } from '@/content/projects';
+import { useProjects } from '@/i18n/hooks';
+import { useT } from '@/i18n/LocaleProvider';
 import { sound } from '@/lib/sound/engine';
 import { CX, CY, WAVE_H, WAVE_NOISE, WAVE_NOISE_2, WAVE_W, rpmToAngle, ringPaths, wavePath, wheelPaths } from './geometry';
 import styles from './Cadence.module.css';
@@ -13,7 +14,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const WHEEL = wheelPaths();
 const RING = ringPaths();
-const P = PROJECTS.find((p) => p.id === 'cadence')!;
 
 const BASE_RPM = 87;
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
@@ -23,6 +23,8 @@ const smooth = (t: number) => {
 };
 
 export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
+  const tx = useT();
+  const P = useProjects().find((p) => p.id === 'cadence')!;
   const rootRef = useRef<HTMLElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const wheelRef = useRef<SVGSVGElement>(null);
@@ -242,7 +244,7 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
                 </text>
               ))}
               <text x={CX} y={566} textAnchor="middle" className={styles.ringHint}>
-                drag the wheel
+                {tx.cadence.hint}
               </text>
               <g ref={pointerRef} transform={`rotate(${rpmToAngle(BASE_RPM)} ${CX} ${CY})`}>
                 <path d="M300 70L291 46L309 46Z" className={styles.needle} />
@@ -250,7 +252,7 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
             </svg>
 
             {/* вращающееся колесо: отдельный слой, крутится через CSS-transform (без перерисовки) */}
-            <svg ref={wheelRef} className={styles.wheel} viewBox="0 0 600 600" role="img" aria-label="Hand-drawn bicycle wheel, spins with scroll">
+            <svg ref={wheelRef} className={styles.wheel} viewBox="0 0 600 600" role="img" aria-label={tx.cadence.wheelAria}>
               <g transform={`translate(${CX} ${CY})`}>
                 {WHEEL.spokes.map((d, i) => (
                   <path key={i} d={d} className={styles.chalk} strokeWidth={1.5} strokeOpacity={0.85} />
@@ -275,12 +277,12 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
       </div>
 
       <div className={styles.col} data-col="">
-        <p className={styles.kicker}>featured project</p>
+        <p className={styles.kicker}>{tx.cadence.kicker}</p>
         <h2 id="cadence-title" className={styles.title}>
           {P.title}
         </h2>
         <p className={styles.blurb}>
-          {P.short} The rhythm of your pedalling sets the tempo.
+          {P.short} {tx.cadence.blurbExtra}
         </p>
 
         <div className={styles.rpmRow}>
@@ -301,7 +303,7 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
         </ul>
 
         <button type="button" className={styles.open} data-cursor="OPEN" onClick={onOpen}>
-          open project ↗
+          {tx.cadence.open}
         </button>
       </div>
     </section>
