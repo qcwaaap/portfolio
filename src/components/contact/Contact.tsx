@@ -65,7 +65,7 @@ export function Contact() {
 
   return (
     <section ref={rootRef} id="contact" className={styles.contact} aria-label="Contact">
-      <TornEdge seed={15} tone="#e4e0d5" />
+      <TornEdge seed={15} tone="var(--contact-bg)" />
 
       <h2 className={styles.connect} data-connect="">
         <span>let&apos;s</span>

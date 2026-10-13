@@ -4,13 +4,13 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import styles from './Cursor.module.css';
 
-const INK = '#171715';
 const ACID = '#c9f13b';
 const PINK = 'rgba(240, 107, 168, 0.42)';
 
 type State = { key: string; scale: number; bg: string; text: string };
 
-const DEFAULT: State = { key: 'default', scale: 0.14, bg: INK, text: '' };
+// bg: '' = цвет чернил текущей темы
+const DEFAULT: State = { key: 'default', scale: 0.14, bg: '', text: '' };
 const LINK: State = { key: 'link', scale: 0.4, bg: PINK, text: '' };
 const label = (text: string): State => ({ key: `label:${text}`, scale: 1, bg: ACID, text });
 
@@ -36,8 +36,11 @@ export function Cursor() {
     const html = document.documentElement;
     html.classList.add('has-cursor');
 
+    // чернила зависят от темы, поэтому читаем их из CSS в момент применения
+    const ink = () => getComputedStyle(html).getPropertyValue('--ink').trim() || '#171715';
+
     gsap.set(root, { xPercent: -50, yPercent: -50, x: -100, y: -100 });
-    gsap.set(bubble, { scale: DEFAULT.scale, backgroundColor: DEFAULT.bg });
+    gsap.set(bubble, { scale: DEFAULT.scale, backgroundColor: ink() });
 
     const qx = gsap.quickTo(root, 'x', { duration: 0.45, ease: 'power3' });
     const qy = gsap.quickTo(root, 'y', { duration: 0.45, ease: 'power3' });
@@ -51,7 +54,7 @@ export function Cursor() {
     const apply = () =>
       gsap.to(bubble, {
         scale: state.scale * (pressed ? 0.82 : 1),
-        backgroundColor: state.bg,
+        backgroundColor: state.bg || ink(),
         duration: 0.35,
         ease: 'power3.out',
         overwrite: true,
@@ -108,6 +111,10 @@ export function Cursor() {
       });
     };
 
+    // смена темы: перекрасить точку, если курсор сейчас обычный
+    const themeObserver = new MutationObserver(() => apply());
+    themeObserver.observe(html, { attributes: true, attributeFilter: ['data-theme'] });
+
     window.addEventListener('pointermove', onMove, { passive: true });
     window.addEventListener('pointerdown', onDown);
     window.addEventListener('pointerup', onUp);
@@ -121,6 +128,7 @@ export function Cursor() {
       window.removeEventListener('scroll', onScroll);
       document.documentElement.removeEventListener('mouseleave', onLeave);
       cancelAnimationFrame(raf);
+      themeObserver.disconnect();
       gsap.killTweensOf([root, bubble, text]);
       html.classList.remove('has-cursor');
     };

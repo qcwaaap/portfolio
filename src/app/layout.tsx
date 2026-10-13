@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 // Шрифты через @fontsource: лежат в node_modules, ничего не скачивается при dev/build
 import '@fontsource/gaegu/300.css';
 import '@fontsource/gaegu/400.css';
@@ -13,9 +13,23 @@ export const metadata: Metadata = {
   description: 'React / TypeScript / Python / Go',
 };
 
+export const viewport: Viewport = {
+  colorScheme: 'light dark',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#e9e5db' },
+    { media: '(prefers-color-scheme: dark)', color: '#1c1b19' },
+  ],
+};
+
+/** Выставляет сохранённую тему до первой отрисовки, чтобы не было вспышки светлой темы. */
+const THEME_INIT = `try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
+      </head>
       <body>
         {/* без JS лоадер не должен навсегда закрывать сайт */}
         <noscript>

@@ -1,0 +1,30 @@
+.btn {
+  position: fixed;
+  left: clamp(14px, 2.4vw, 28px);
+  bottom: clamp(14px, 2.4vw, 28px);
+  z-index: 1800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  font-family: var(--font-mono, ui-monospace), monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid rgb(var(--ink-rgb) / 0.14);
+  border-radius: 999px;
+  box-shadow: 0 6px 16px -8px rgb(var(--shadow-rgb) / 0.4);
+  cursor: pointer;
+  backdrop-filter: blur(3px);
+}
+
+.btn:hover {
+  border-color: rgb(var(--ink-rgb) / 0.3);
+}
+
+.icon {
+  display: inline-block;
+  font-size: 15px;
+  line-height: 1;
+}

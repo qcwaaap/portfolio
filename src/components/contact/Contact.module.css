@@ -3,7 +3,7 @@
   overflow-x: clip; /* влетающие предметы не должны раздвигать страницу вширь */
   z-index: 8;
   height: max(50vw, 680px);
-  background-color: #e4e0d5;
+  background-color: var(--contact-bg);
   /* «мятая» бумага: складки, блики и зерно */
   background-image:
     linear-gradient(112deg, transparent 33%, rgba(255, 255, 255, 0.4) 33.2%, transparent 33.7%),
@@ -12,7 +12,7 @@
     linear-gradient(24deg, transparent 71%, rgba(0, 0, 0, 0.05) 71.2%, transparent 71.7%),
     radial-gradient(ellipse at 18% 28%, rgba(255, 255, 255, 0.3), transparent 46%),
     radial-gradient(ellipse at 82% 74%, rgba(0, 0, 0, 0.06), transparent 52%),
-    url('/textures/grain.png'), url('/textures/mottle.png');
+    var(--tex-grain), var(--tex-mottle);
   background-size:
     100% 100%,
     100% 100%,

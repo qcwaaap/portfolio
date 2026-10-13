@@ -14,7 +14,7 @@
 }
 
 .fringe {
-  background: #f7f4ec;
+  background: var(--fringe);
 }
 
 .paper {

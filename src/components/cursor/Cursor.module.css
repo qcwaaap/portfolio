@@ -22,6 +22,6 @@
 .label {
   font: 500 12px/1 var(--font-mono, ui-monospace), monospace;
   letter-spacing: 0.1em;
-  color: var(--ink);
+  color: var(--on-light);
   opacity: 0;
 }

@@ -7,7 +7,7 @@
   visibility: hidden;
   will-change: transform;
   /* лёгкий светлый ореол: собачка читается и на тёмной бумаге (Cadence, footer) */
-  filter: drop-shadow(0 0 1px #f6f3eb) drop-shadow(0 0 2px rgba(246, 243, 235, 0.85));
+  filter: drop-shadow(0 0 1px var(--glow)) drop-shadow(0 0 2px color-mix(in srgb, var(--glow) 85%, transparent));
 }
 
 .svg {
@@ -35,7 +35,7 @@
 }
 
 .svg ellipse.shadow {
-  fill: rgba(23, 23, 21, 0.12);
+  fill: rgb(var(--ink-rgb) / 0.12);
 }
 
 .heart {
@@ -58,6 +58,6 @@
   opacity: 0;
   pointer-events: none;
   text-shadow:
-    0 0 3px #f6f3eb,
-    0 0 6px #f6f3eb;
+    0 0 3px var(--glow),
+    0 0 6px var(--glow);
 }

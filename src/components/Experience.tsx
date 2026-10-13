@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { PRELOAD } from '@/content/photos';
 import { Cursor } from './cursor/Cursor';
 import { RoamingDog } from './dog/RoamingDog';
+import { ThemeToggle } from './theme/ThemeToggle';
 import { SoundToggle } from './sound/SoundToggle';
 import { useUiSounds } from './sound/useUiSounds';
 import { About } from './about/About';
@@ -29,6 +30,7 @@ export function Experience() {
       <SmoothScroll enabled={ready} />
       <Cursor />
       <RoamingDog enabled={ready} />
+      <ThemeToggle />
       <SoundToggle />
       <main>
         <Hero revealed={revealed} />

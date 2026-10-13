@@ -12,8 +12,77 @@
   --red: #e43d2f;
   --tape: rgba(214, 207, 183, 0.66);
 
+  /* поверхности поверх бумаги: полароиды, карточки, модалка, бахрома разрыва */
+  --surface: #f6f3eb;
+  --surface-2: #f1eee6;
+  --fringe: #f7f4ec;
+  --contact-bg: #e4e0d5;
+  --on-light: #171715; /* текст на цветных стикерах — тёмный в обеих темах */
+  --ink-rgb: 23 23 21; /* полупрозрачные оттенки чернил */
+  --shadow-rgb: 23 23 21;
+  --glow: #f6f3eb; /* светлая «обводка» вокруг собаки */
+  --tex-grain: url('/textures/grain.png');
+  --tex-mottle: url('/textures/mottle.png');
+  color-scheme: light;
+
   --font-hand: 'Gaegu';
   --font-mono: 'IBM Plex Mono';
+}
+
+/* Тёмная тема: «ночная бумага». Ручной выбор (data-theme) главнее системной настройки. */
+:root[data-theme='dark'] {
+  --paper: #1c1b19;
+  --paper-2: #222120;
+  --paper-3: #1e1d1b;
+  --ink: #ece9e1;
+  --ink-soft: #a8a498;
+  --pink: #f27fb4;
+  --blue: #6f9cf0;
+  --tape: rgba(120, 112, 90, 0.5);
+  --surface: #2c2a26;
+  --surface-2: #2a2825;
+  --fringe: #2f2d29;
+  --contact-bg: #262522;
+  --ink-rgb: 236 233 225;
+  --shadow-rgb: 0 0 0;
+  --glow: #1c1b19;
+  --tex-grain: url('/textures/grain-light.png');
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #1c1b19;
+    --paper-2: #222120;
+    --paper-3: #1e1d1b;
+    --ink: #ece9e1;
+    --ink-soft: #a8a498;
+    --pink: #f27fb4;
+    --blue: #6f9cf0;
+    --tape: rgba(120, 112, 90, 0.5);
+    --surface: #2c2a26;
+    --surface-2: #2a2825;
+    --fringe: #2f2d29;
+    --contact-bg: #262522;
+    --ink-rgb: 236 233 225;
+    --shadow-rgb: 0 0 0;
+    --glow: #1c1b19;
+    --tex-grain: url('/textures/grain-light.png');
+    color-scheme: dark;
+  }
+}
+
+/* плавная смена темы только в момент переключения (класс ставит ThemeToggle) */
+html.theme-fade,
+html.theme-fade *,
+html.theme-fade *::before,
+html.theme-fade *::after {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    fill 0.35s ease,
+    stroke 0.35s ease !important;
 }
 
 *,
@@ -45,7 +114,7 @@ html.is-modal body {
 .paper-surface,
 body {
   background-color: var(--paper);
-  background-image: url('/textures/grain.png'), url('/textures/mottle.png');
+  background-image: var(--tex-grain), var(--tex-mottle);
   background-size:
     256px 256px,
     900px 900px;

@@ -18,7 +18,7 @@
 }
 
 .edge {
-  background: #f7f4ec; /* светлая бахрома бумаги под разрывом */
+  background: var(--fringe); /* светлая бахрома бумаги под разрывом */
 }
 
 .shadow {
@@ -27,7 +27,7 @@
   right: 0;
   top: calc(100% + 18px);
   height: 46px;
-  background: linear-gradient(rgba(23, 23, 21, 0.18), transparent);
+  background: linear-gradient(rgb(var(--shadow-rgb) / 0.18), transparent);
 }
 
 .stage {
@@ -77,11 +77,11 @@
   bottom: clamp(26px, 7vh, 72px);
   width: min(300px, 74vw);
   padding: 22px 26px 16px;
-  background-color: #f6f3eb;
+  background-color: var(--surface);
   border-radius: 2px 6px 3px 8px / 5px 2px 7px 3px;
   box-shadow:
-    0 1px 1px rgba(23, 23, 21, 0.14),
-    0 10px 20px -10px rgba(23, 23, 21, 0.35);
+    0 1px 1px rgb(var(--shadow-rgb) / 0.14),
+    0 10px 20px -10px rgb(var(--shadow-rgb) / 0.35);
   transform: rotate(-2.2deg);
 }
 

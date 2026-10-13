@@ -213,7 +213,7 @@
   display: block;
   padding: 14px 16px 10px 14px;
   background: var(--acid);
-  color: var(--ink);
+  color: var(--on-light);
   text-decoration: none;
   clip-path: polygon(3% 0, 100% 4%, 97% 100%, 0 94%);
 }
