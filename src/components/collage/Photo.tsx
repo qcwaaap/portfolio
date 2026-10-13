@@ -17,10 +17,12 @@ type PhotoProps = {
   children?: ReactNode;
   interactive?: boolean;
   labelSide?: 'left' | 'right';
+  /** фото первого экрана — без ленивой загрузки */
+  eager?: boolean;
 };
 
 /** Фотография, приклеенная скотчем. Без `src` показывает заглушку в тонах будущего снимка. */
-export function Photo({ src, alt, label, tone, ratio = '5 / 4', frame = 'plain', tapes = ['tl', 'br'], cursor = 'VIEW', labelSide = 'right', children, interactive = true }: PhotoProps) {
+export function Photo({ src, alt, label, tone, ratio = '5 / 4', frame = 'plain', tapes = ['tl', 'br'], cursor = 'VIEW', labelSide = 'right', children, interactive = true, eager = false }: PhotoProps) {
   return (
     <figure
       className={`${styles.photo} ${frame === 'polaroid' ? styles.polaroid : ''} ${interactive ? '' : styles.static}`}
@@ -32,7 +34,7 @@ export function Photo({ src, alt, label, tone, ratio = '5 / 4', frame = 'plain',
           <div className={styles.art}>{children}</div>
         ) : src ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={src} alt={alt} draggable={false} decoding="async" />
+          <img src={src} alt={alt} draggable={false} decoding="async" loading={eager ? 'eager' : 'lazy'} />
         ) : (
           <div className={styles.placeholder} data-tone={tone} role="img" aria-label={alt}>
             <span className={`${styles.label} ${labelSide === 'left' ? styles.labelLeft : ''}`}>{label}</span>

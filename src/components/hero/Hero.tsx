@@ -197,7 +197,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
       </p>
 
       <Item className={styles.mountains} depth={0.5} rotate={-3.5} enter="left" z={2}>
-        <Photo {...PHOTOS.mountains} tone="mountains" ratio="5 / 4" tapes={['tr', 'bl']} />
+        <Photo {...PHOTOS.mountains} eager tone="mountains" ratio="5 / 4" tapes={['tr', 'bl']} />
       </Item>
 
       <Item className={styles.title} depth={0.3} z={3}>
@@ -233,7 +233,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
         <InternetNote />
       </Item>
       <Item className={styles.flowers} depth={0.8} rotate={5} enter="top" z={2}>
-        <Photo {...PHOTOS.flowers} tone="flowers" ratio="4 / 3" tapes={['top']} />
+        <Photo {...PHOTOS.flowers} eager tone="flowers" ratio="4 / 3" tapes={['top']} />
       </Item>
       <Item className={styles.dogs} depth={1} rotate={-2} enter="right" z={3}>
         <Photo {...PHOTOS.dogs} tone="dogs" ratio="4 / 3" frame="polaroid" tapes={['tl', 'tr']} />
