@@ -10,7 +10,7 @@ type Ctx = { locale: Locale; t: Dictionary; setLocale: (next: Locale) => void };
 const LocaleContext = createContext<Ctx | null>(null);
 
 /**
- * Язык страницы. Каждый язык имеет свой URL (/en, /ru, /zh) — чтобы поисковик и ссылки видели нужный текст,
+ * Язык страницы. Каждый язык имеет свой URL (/en, /zh) — чтобы поисковик и ссылки видели нужный текст,
  * но переключение внутри страницы не перезагружает её: иначе лоадер проигрывался бы заново.
  */
 export function LocaleProvider({ initial, children }: { initial: Locale; children: ReactNode }) {

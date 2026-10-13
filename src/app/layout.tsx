@@ -5,8 +5,6 @@ import '@fontsource/gaegu/400.css';
 import '@fontsource/gaegu/700.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
-import '@fontsource/caveat/400.css';
-import '@fontsource/caveat/700.css';
 import '@fontsource/ma-shan-zheng/400.css';
 import 'lenis/dist/lenis.css';
 import './globals.css';
@@ -25,7 +23,7 @@ export const viewport: Viewport = {
 };
 
 /** Выставляет сохранённую тему до первой отрисовки, чтобы не было вспышки светлой темы. */
-const THEME_INIT = `try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}try{var l=location.pathname.split('/')[1];var m={en:'en',ru:'ru',zh:'zh-Hans'};if(m[l])document.documentElement.lang=m[l]}catch(e){}`;
+const THEME_INIT = `try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}try{var l=location.pathname.split('/')[1];var m={en:'en',zh:'zh-Hans'};if(m[l])document.documentElement.lang=m[l]}catch(e){}`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

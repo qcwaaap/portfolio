@@ -1,4 +1,4 @@
-export const LOCALES = ['en', 'ru', 'zh'] as const;
+export const LOCALES = ['en', 'zh'] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const DEFAULT_LOCALE: Locale = 'en';
@@ -7,7 +7,6 @@ export const LOCALE_COOKIE = 'locale';
 /** Подписи в переключателе: каждый язык называется на самом себе. */
 export const LOCALE_LABELS: Record<Locale, { short: string; name: string; htmlLang: string }> = {
   en: { short: 'EN', name: 'English', htmlLang: 'en' },
-  ru: { short: 'RU', name: 'Русский', htmlLang: 'ru' },
   zh: { short: '中', name: '中文', htmlLang: 'zh-Hans' },
 };
 
