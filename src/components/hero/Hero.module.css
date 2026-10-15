@@ -116,20 +116,41 @@
 
 /* композиция */
 .mountains {
-  left: -2.5vw;
-  top: 15%;
-  width: 25vw;
+  left: -8vw;
+  top: 23%;
+  width: 28vw;
 }
 
-.title {
-  left: 22.5vw;
-  top: 13%;
-  width: 39vw;
+.titleMaria {
+  left: 21vw;
+  top: calc(11% - 1.3vw);
+  width: 56vw;
+}
+
+.titleNed {
+  left: 26.9vw;
+  top: calc(11% + 15.7vw);
+  width: 50.1vw;
+}
+
+.me {
+  left: 35vw;
+  top: 12%;
+  width: 30vw;
+}
+
+/* вырезка как наклейка: белый контур + тень */
+.meImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)
+    drop-shadow(4px 8px 10px rgb(0 0 0 / 0.25));
 }
 
 .star1 {
-  left: 62vw;
-  top: 11%;
+  left: 17vw;
+  top: 14%;
   width: 3vw;
 }
 
@@ -139,9 +160,21 @@
   overflow: visible;
 }
 
+.guide {
+  left: 35vw;
+  top: 81%;
+}
+
+.hand {
+  margin: 0;
+  font-family: var(--font-hand, 'Comic Sans MS'), cursive;
+  font-size: clamp(16px, 1.7vw, 30px);
+  white-space: nowrap;
+}
+
 .tagline {
-  left: 23.5vw;
-  top: 44%;
+  left: 22vw;
+  top: 76%;
 }
 
 .taglineText {
@@ -149,12 +182,6 @@
   font-family: var(--font-hand, 'Comic Sans MS'), cursive;
   font-size: clamp(24px, 2.5vw, 42px);
   white-space: nowrap;
-}
-
-.loop {
-  left: 26vw;
-  top: 50%;
-  width: 24vw;
 }
 
 .dog {
@@ -168,50 +195,44 @@
 }
 
 .starPink {
-  left: 17vw;
-  top: 80%;
+  left: 30vw;
+  top: 90%;
   width: 3.4vw;
 }
 
 .bike {
-  left: 46vw;
-  top: 60%;
-  width: 30vw;
-}
-
-.note {
-  left: 61vw;
-  top: 32%;
-  width: 14vw;
+  left: 56vw;
+  top: 72%;
+  width: 24vw;
 }
 
 .flowers {
-  left: 64vw;
-  top: 4%;
-  width: 16.5vw;
+  left: 79vw;
+  top: 2%;
+  width: 20vw;
 }
 
 .dogs {
-  left: 79.5vw;
-  top: 21%;
+  left: 81vw;
+  top: 32%;
   width: 18vw;
 }
 
 .landscape {
-  left: 73.5vw;
-  top: 45%;
-  width: 20vw;
+  left: 76vw;
+  top: 62%;
+  width: 22vw;
 }
 
 .sticker {
-  left: 87.5vw;
-  top: 66%;
-  width: 9vw;
+  left: 89vw;
+  top: 72%;
+  width: 7vw;
 }
 
 .stickerLink {
   display: block;
-  padding: 14px 16px 10px 14px;
+  padding: 10px 12px 8px 10px;
   background: var(--acid);
   color: var(--on-light);
   text-decoration: none;
@@ -222,7 +243,7 @@
   display: block;
   font-family: var(--font-hand, 'Comic Sans MS'), cursive;
   font-weight: 700;
-  font-size: clamp(18px, 2.1vw, 32px);
+  font-size: clamp(14px, 1.55vw, 24px);
   line-height: 0.95;
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -257,26 +278,47 @@
   }
 
   .mountains {
-    left: -9vw;
-    top: 9%;
-    width: 47vw;
+    left: -14vw;
+    top: 6%;
+    width: 38vw;
   }
 
   .flowers {
-    left: 57vw;
-    top: 8%;
-    width: 39vw;
+    left: 66vw;
+    top: 4%;
+    width: 32vw;
   }
 
-  .title {
+  .titleMaria {
     left: 3vw;
-    top: 27%;
-    width: 93vw;
+    top: calc(30% - 2.1vw);
+    width: 94vw;
+  }
+
+  .titleNed {
+    left: 12.9vw;
+    top: calc(30% + 26.4vw);
+    width: 84.1vw;
+  }
+
+  .guide {
+    left: 50vw;
+    top: 56%;
+  }
+
+  .hand {
+    font-size: 19px;
+  }
+
+  .me {
+    left: 18vw;
+    top: 8%;
+    width: 64vw;
   }
 
   .star1 {
     left: 84vw;
-    top: 24%;
+    top: 27%;
     width: 9vw;
   }
 
@@ -289,13 +331,6 @@
     font-size: 28px;
   }
 
-  .loop {
-    left: 8vw;
-    top: 49.5%;
-    width: 70vw;
-  }
-
-  .note,
   .starPink {
     display: none;
   }

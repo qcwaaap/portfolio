@@ -10,8 +10,8 @@ import { usePhoto } from '@/i18n/hooks';
 import { useT } from '@/i18n/LocaleProvider';
 import { BikeDoodle } from './BikeDoodle';
 import { DogDoodle } from './DogDoodle';
-import { InternetNote, PinkLoop, ScrollSticker } from './Doodles';
-import { TitleStrokes } from './TitleStrokes';
+import { ScrollSticker } from './Doodles';
+import { TitleMaria, TitleNed } from './TitleStrokes';
 import styles from './Hero.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -204,8 +204,25 @@ export function Hero({ revealed }: { revealed: boolean }) {
         <Photo {...photo('mountains')} eager tone="mountains" ratio="5 / 4" tapes={['tr', 'bl']} />
       </Item>
 
-      <Item className={styles.title} depth={0.3} z={3}>
-        <TitleStrokes />
+      <Item className={styles.titleMaria} depth={0.3} z={2}>
+        <TitleMaria letters={[0, 1, 2]} />
+      </Item>
+      <Item className={styles.me} depth={0.55} rotate={3} enter="right" z={3}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.meImg} src="/images/maria.png" alt="Maria Nedbailova" width={680} height={700} decoding="async" />
+      </Item>
+      {/* «I» и последняя «A» лежат поверх фото и прячут часть руки */}
+      <Item className={styles.titleMaria} depth={0.3} z={4}>
+        <TitleMaria letters={[3, 4]} />
+      </Item>
+      <Item className={styles.titleNed} depth={0.3} z={4}>
+        <TitleNed />
+      </Item>
+
+      <Item className={styles.guide} depth={0.5} rotate={-4} z={5}>
+        <p className={styles.hand} data-fade="" data-at="2.8" data-dur="0.6">
+          {t.hero.guide}
+        </p>
       </Item>
       <Item className={styles.star1} depth={0.6} rotate={12}>
         <StarDoodle className={styles.starSvg} seed={4} at={2.6} dur={0.5} />
@@ -215,9 +232,6 @@ export function Hero({ revealed }: { revealed: boolean }) {
         <p className={styles.taglineText} data-fade="" data-at="2.7" data-dur="0.6">
           {t.hero.tagline}
         </p>
-      </Item>
-      <Item className={styles.loop} depth={0.4} z={3}>
-        <PinkLoop />
       </Item>
 
       <Item className={styles.dog} depth={0.9} enter="left" z={3}>
@@ -233,9 +247,6 @@ export function Hero({ revealed }: { revealed: boolean }) {
         <BikeDoodle />
       </Item>
 
-      <Item className={styles.note} depth={0.6}>
-        <InternetNote />
-      </Item>
       <Item className={styles.flowers} depth={0.8} rotate={5} enter="top" z={2}>
         <Photo {...photo('flowers')} eager tone="flowers" ratio="4 / 3" tapes={['top']} />
       </Item>

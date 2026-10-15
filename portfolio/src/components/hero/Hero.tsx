@@ -200,6 +200,11 @@ export function Hero({ revealed }: { revealed: boolean }) {
         <Photo {...PHOTOS.mountains} tone="mountains" ratio="5 / 4" tapes={['tr', 'bl']} />
       </Item>
 
+      <Item className={styles.me} depth={0.55} rotate={4} enter="right" z={2}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.meImg} src="/images/maria.png" alt="Maria Nedbailova" width={700} height={700} decoding="async" />
+      </Item>
+
       <Item className={styles.title} depth={0.3} z={3}>
         <TitleStrokes />
       </Item>

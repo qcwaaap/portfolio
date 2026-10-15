@@ -128,6 +128,21 @@
   width: 39vw;
 }
 
+.me {
+  left: 53vw;
+  top: 14%;
+  width: 17vw;
+}
+
+/* вырезка как наклейка: белый контур + тень */
+.meImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)
+    drop-shadow(4px 8px 10px rgb(0 0 0 / 0.25));
+}
+
 .star1 {
   left: 62vw;
   top: 11%;
@@ -273,6 +288,12 @@
     left: 3vw;
     top: 27%;
     width: 93vw;
+  }
+
+  .me {
+    left: 50vw;
+    top: 12%;
+    width: 44vw;
   }
 
   .star1 {

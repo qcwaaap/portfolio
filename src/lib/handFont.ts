@@ -63,6 +63,8 @@ type WordOpts = {
   /** «пробег» штриха за концы */
   overshoot: number;
   drips?: readonly Drip[];
+  /** «размашистость»: наклон (градусы) и сдвиг по вертикали отдельных букв */
+  fx?: (letter: number) => { rot?: number; dy?: number };
 };
 
 export function layoutWord(word: string, o: WordOpts) {
@@ -81,7 +83,13 @@ export function layoutWord(word: string, o: WordOpts) {
 
     g.strokes.forEach((st) => {
       sd += 1;
-      const pts = st.map(([u, v]) => [cx + u * w, o.y + v * o.h] as Pt);
+      const fx = o.fx?.(li) ?? {};
+      const rad = ((fx.rot ?? 0) * Math.PI) / 180;
+      const [ox, oy] = [cx + w / 2, o.y + o.h / 2];
+      const pts = st.map(([u, v]) => {
+        const [dx, dy] = [cx + u * w - ox, o.y + v * o.h - oy];
+        return [ox + dx * Math.cos(rad) - dy * Math.sin(rad), oy + dx * Math.sin(rad) + dy * Math.cos(rad) + (fx.dy ?? 0)] as Pt;
+      });
       const draw = (shift: Pt, seed: number, jit: number, over: number) => {
         const p = pts.map((q) => [q[0] + shift[0], q[1] + shift[1]] as Pt);
         return p.length === 2 ? scribbleLine(p[0]!, p[1]!, seed, { wobble: jit, overshoot: over }) : scribbleCurve(p, seed, jit);

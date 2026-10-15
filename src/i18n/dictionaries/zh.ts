@@ -23,6 +23,7 @@ export const zh: Dictionary = {
     about: '关于',
     contact: '联系',
     tagline: '全栈开发者',
+    guide: '我带你逛逛',
     internet: ['目前在互联网的', '某个角落'],
     scrollAria: '向下滚动',
     scroll: ['向下', '滚动'],

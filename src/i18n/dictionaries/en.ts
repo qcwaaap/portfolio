@@ -26,6 +26,7 @@ export const en = {
     about: 'about',
     contact: 'contact',
     tagline: 'fullstack developer',
+    guide: 'let me show you around',
     internet: ['currently somewhere', 'on the internet'] as [string, string],
     scrollAria: 'Scroll down',
     scroll: ['scroll', 'down'] as [string, string],
