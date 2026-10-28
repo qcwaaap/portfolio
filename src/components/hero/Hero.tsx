@@ -209,7 +209,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
       </Item>
       <Item className={styles.me} depth={0.55} rotate={3} enter="right" z={3}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.meImg} src="/images/maria.png" alt="Maria Nedbailova" width={680} height={700} decoding="async" />
+        <img className={styles.meImg} fetchPriority="high" src="/images/maria.webp" alt="Maria Nedbailova" width={680} height={700} decoding="async" />
       </Item>
       {/* «I» и последняя «A» лежат поверх фото и прячут часть руки */}
       <Item className={styles.titleMaria} depth={0.3} z={4}>

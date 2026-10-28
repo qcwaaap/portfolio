@@ -52,6 +52,7 @@
   color-scheme: dark;
 }
 
+/* ВАЖНО: те же значения, что в блоке выше — без data-theme берём системную тему. Менять в двух местах. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --paper: #1c1b19;

@@ -1,9 +1,9 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import { PRELOAD } from '@/content/photos';
 import { Cursor } from './cursor/Cursor';
-import { RoamingDog } from './dog/RoamingDog';
 import { LanguageSwitch } from './i18n/LanguageSwitch';
 import { ThemeToggle } from './theme/ThemeToggle';
 import { SoundToggle } from './sound/SoundToggle';
@@ -14,6 +14,9 @@ import { Hero } from './hero/Hero';
 import { Work } from './work/Work';
 import { Loader } from './loader/Loader';
 import { SmoothScroll } from './smooth/SmoothScroll';
+
+// собака нужна не сразу (первый выход через ~10 с) — не тянем её в первый бандл
+const RoamingDog = dynamic(() => import('./dog/RoamingDog').then((m) => m.RoamingDog), { ssr: false });
 
 /**
  * Корень интерактивной части: связывает лоадер → hero.
