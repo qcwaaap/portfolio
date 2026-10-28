@@ -9,6 +9,7 @@ import { ThemeToggle } from './theme/ThemeToggle';
 import { SoundToggle } from './sound/SoundToggle';
 import { useUiSounds } from './sound/useUiSounds';
 import { About } from './about/About';
+import { Booth } from './booth/Booth';
 import { Contact } from './contact/Contact';
 import { Hero } from './hero/Hero';
 import { Work } from './work/Work';
@@ -41,6 +42,7 @@ export function Experience() {
         <Hero revealed={revealed} />
         <Work />
         <About />
+        <Booth />
         <Contact />
       </main>
     </>
