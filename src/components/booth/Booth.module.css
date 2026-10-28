@@ -230,6 +230,21 @@
   pointer-events: none;
 }
 
+.guide {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  z-index: 2;
+  width: 37.5%;
+  transform: translate(-50%, -50%);
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.4;
+  stroke-dasharray: 4 3;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
+  pointer-events: none;
+}
+
 .overlayMsg,
 .hint,
 .count,
@@ -298,6 +313,14 @@
   transform: rotate(-2deg);
 }
 
+.err {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--red);
+  word-break: break-word;
+}
+
 .note,
 .status {
   margin: 0;
@@ -344,7 +367,7 @@
 }
 
 .chip {
-  padding: 5px 12px;
+  padding: 4px 11px;
   font: 500 13px/1.4 var(--font-mono, ui-monospace), monospace;
   color: var(--ink);
   background: var(--surface);
@@ -371,8 +394,9 @@
 }
 
 .swatch {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
+  background-size: cover;
   border: 2px solid rgb(var(--ink-rgb) / 0.35);
   border-radius: 50%;
   cursor: pointer;

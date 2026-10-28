@@ -7,11 +7,22 @@ import { useLocale } from '@/i18n/LocaleProvider';
 import { sound } from '@/lib/sound/engine';
 import { detectFaces, loadFaceTracker } from './faceTracker';
 import { MASKS, smoothFace, type Face, type MaskId } from './masks';
-import { FILTERS, H, W, canFilter, drawScene, facesFrom, type FilterId } from './render';
-import { PAPERS, composeStrip, swatch, toBlob, type PaperId } from './strip';
+import { FILTERS, H, W, canFilter, drawScene, facesFrom, staticFace, type FilterId } from './render';
+import { LAYOUTS, PAPERS, composeStrip, swatch, toBlob, type LayoutId, type PaperId } from './strip';
 import styles from './Booth.module.css';
 
 const SHOTS = 4;
+/** Текст ошибки + признаки, по которым понятно, почему не стартовал трекинг (например, нет WebGL2). */
+function describe(e: unknown) {
+  // при блокировке сети загрузка скрипта/модели падает событием, а не ошибкой
+  const msg = e instanceof Error ? e.message : e instanceof Event ? 'could not download the face model (network, VPN or ad blocker?)' : String(e);
+  let gl = 'no';
+  try {
+    gl = document.createElement('canvas').getContext('webgl2') ? 'yes' : 'no';
+  } catch {}
+  return `${msg} [webgl2: ${gl}]`;
+}
+
 const wait = (ms: number) => new Promise<void>((r) => window.setTimeout(r, ms));
 
 type Cam = 'asking' | 'ready' | 'denied' | 'missing' | 'busy' | 'insecure';
@@ -32,6 +43,7 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
 
   const [cam, setCam] = useState<Cam>('asking');
   const [tracker, setTracker] = useState<'loading' | 'ok' | 'failed'>('loading');
+  const [trackerError, setTrackerError] = useState('');
   const [phase, setPhase] = useState<Phase>('live');
   const [count, setCount] = useState<number | null>(null);
   const [shotIdx, setShotIdx] = useState(0);
@@ -39,13 +51,15 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
   const [faceSeen, setFaceSeen] = useState(true);
   const [masks, setMasks] = useState<ReadonlySet<MaskId>>(new Set(['dog']));
   const [filter, setFilter] = useState<FilterId>('color');
-  const [paper, setPaper] = useState<PaperId>('paper');
+  const [paper, setPaper] = useState<PaperId>('white')
+  const [layout, setLayout] = useState<LayoutId>('strip');
   const [strip, setStrip] = useState<{ url: string; blob: Blob } | null>(null);
   const [canShare, setCanShare] = useState(false);
 
   // то, что нужно рисующему циклу, читаем через ref: цикл живёт один раз
   const scene = useRef({ filter, masks, grain: null as HTMLImageElement | null });
   const phaseRef = useRef<Phase>('live');
+  const failedRef = useRef(false);
   useEffect(() => {
     scene.current.filter = filter;
     scene.current.masks = masks;
@@ -124,7 +138,13 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
         trackerRef.current = tr;
         setTracker('ok');
       })
-      .catch(() => !off && setTracker('failed'));
+      .catch((e: unknown) => {
+        console.warn('[photo booth] face model error:', e);
+        if (off) return;
+        setTrackerError(describe(e));
+        failedRef.current = true;
+        setTracker('failed');
+      });
     const grain = new Image();
     grain.src = '/textures/grain.png';
     scene.current.grain = grain;
@@ -144,7 +164,6 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
     let raf = 0;
     let faces: Face[] = [];
     let lastDetect = 0;
-    let lastTime = -1;
     let seen = true;
     let failures = 0;
     const t0 = performance.now();
@@ -153,9 +172,10 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
       raf = requestAnimationFrame(frame);
       if (document.hidden || video.readyState < 2 || !video.videoWidth || phaseRef.current === 'review') return;
       const tr = trackerRef.current;
-      if (tr && now - lastDetect > 40 && video.currentTime !== lastTime) {
+      if (failedRef.current && faces.length === 0) faces = [staticFace()];
+      // у живого потока currentTime не везде меняется, поэтому ориентируемся только на время
+      if (tr && now - lastDetect > 40) {
         lastDetect = now;
-        lastTime = video.currentTime;
         try {
           const found = facesFrom(detectFaces(tr, video, now), video);
           faces = found.map((f, i) => smoothFace(faces[i], f));
@@ -165,6 +185,8 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
           // несколько сбоев подряд — модель не работает: скажем об этом, а не будем молчать
           if (++failures === 1) console.warn('[photo booth] face detection error:', e);
           if (failures >= 5) {
+            setTrackerError(describe(e));
+            failedRef.current = true;
             trackerRef.current = null;
             setTracker('failed');
           }
@@ -183,9 +205,9 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
 
   // ── полоска: пересобираем при смене бумаги ──
   const compose = useCallback(
-    async (shots: HTMLCanvasElement[], p: PaperId) => {
+    async (shots: HTMLCanvasElement[], p: PaperId, l: LayoutId) => {
       const date = new Date().toLocaleDateString(LOCALE_LABELS[locale].htmlLang, { day: 'numeric', month: 'long', year: 'numeric' });
-      const c = await composeStrip(shots, p, t.caption, date);
+      const c = await composeStrip(shots, p, l, t.caption, date);
       const blob = await toBlob(c);
       if (!blob || !alive.current) return;
       if (stripUrl.current) URL.revokeObjectURL(stripUrl.current);
@@ -196,8 +218,8 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
   );
 
   useEffect(() => {
-    if (phase === 'review' && shotsRef.current.length) void compose(shotsRef.current, paper);
-  }, [phase, paper, compose]);
+    if (phase === 'review' && shotsRef.current.length) void compose(shotsRef.current, paper, layout);
+  }, [phase, paper, layout, compose]);
 
   useEffect(
     () => () => {
@@ -312,6 +334,11 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
                   <canvas ref={canvasRef} className={styles.canvas} width={W} height={H} role="img" aria-label={t.viewfinderAlt} />
                   {cam === 'asking' && <p className={styles.overlayMsg}>{t.askingCamera}</p>}
                   {camMessage && <p className={styles.overlayMsg}>{camMessage}</p>}
+                  {tracker === 'failed' && !busy && (
+                    <svg className={styles.guide} viewBox="0 0 100 138" aria-hidden>
+                      <ellipse cx="50" cy="69" rx="47" ry="65" />
+                    </svg>
+                  )}
                   {cam === 'ready' && tracker === 'ok' && !faceSeen && !busy && <p className={styles.hint}>{t.noFace}</p>}
                   {count !== null && (
                     <div key={`${shotIdx}-${count}`} className={styles.count} aria-live="assertive">
@@ -326,7 +353,12 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
                   )}
                 </div>
                 {cam === 'ready' && tracker === 'loading' && <p className={styles.note}>{t.loadingModel}</p>}
-                {tracker === 'failed' && <p className={styles.note}>{t.noMasks}</p>}
+                {tracker === 'failed' && (
+                  <p className={styles.note}>
+                    {t.noMasks}
+                    {trackerError && <code className={styles.err}> {trackerError.slice(0, 140)}</code>}
+                  </p>
+                )}
             </div>
 
             <div className={styles.panel}>
@@ -338,7 +370,7 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
                     <legend>{t.masksHead}</legend>
                     <div className={styles.chips}>
                       {MASKS.map((id) => (
-                        <button key={id} type="button" className={styles.chip} aria-pressed={masks.has(id)} onClick={() => toggleMask(id)} disabled={tracker === 'failed'}>
+                        <button key={id} type="button" className={styles.chip} aria-pressed={masks.has(id)} onClick={() => toggleMask(id)}>
                           {t.masks[id]}
                         </button>
                       ))}
@@ -366,6 +398,16 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
 
               {phase === 'review' && (
                 <>
+                  <fieldset className={styles.group}>
+                    <legend>{t.layoutHead}</legend>
+                    <div className={styles.chips}>
+                      {LAYOUTS.map((id) => (
+                        <button key={id} type="button" className={styles.chip} aria-pressed={layout === id} onClick={() => setLayout(id)}>
+                          {t.layouts[id]}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
                   <fieldset className={styles.group}>
                     <legend>{t.paperHead}</legend>
                     <div className={styles.chips}>

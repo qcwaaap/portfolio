@@ -15,9 +15,22 @@ export function loadFaceTracker(): Promise<FaceLandmarker> {
   landmarker ??= (async () => {
     const { FaceLandmarker, FilesetResolver } = await import('@mediapipe/tasks-vision');
     const fileset = await FilesetResolver.forVisionTasks(WASM);
-    // CPU: на кадр уходит 10–20 мс, зато работает везде. GPU-режим на части видеокарт создаётся,
-    // но потом молча не находит лица.
-    return FaceLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: MODEL, delegate: 'CPU' }, runningMode: 'VIDEO', numFaces: 2 });
+    // MediaPipe всегда заводит внутри себя WebGL-контекст. По умолчанию он берёт OffscreenCanvas, а в Safari
+    // WebGL2 на нём не создаётся («undefined is not an object (evaluating 'GLctx.activeTexture')»),
+    // поэтому отдаём ему обычный <canvas>.
+    const make = (delegate: 'CPU' | 'GPU') =>
+      FaceLandmarker.createFromOptions(fileset, {
+        baseOptions: { modelAssetPath: MODEL, delegate },
+        runningMode: 'VIDEO',
+        numFaces: 2,
+        canvas: document.createElement('canvas'),
+      });
+    // CPU надёжнее: GPU-режим на части видеокарт создаётся, но потом молча не находит лица
+    try {
+      return await make('CPU');
+    } catch {
+      return await make('GPU');
+    }
   })().catch((e) => {
     landmarker = null; // дадим попробовать ещё раз
     throw e;
