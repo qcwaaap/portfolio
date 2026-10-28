@@ -67,6 +67,8 @@ export const zh: Dictionary = {
     askingCamera: '请允许使用摄像头',
     denied: '摄像头权限被拒绝。请在浏览器设置中允许后重新打开拍照亭。',
     noCamera: '此设备上没有找到摄像头。',
+    busy: '摄像头被占用或被系统阻止。请关闭其他使用摄像头的应用（如 Zoom、FaceTime），并在系统设置中检查浏览器的摄像头权限。',
+    insecure: '摄像头仅在 HTTPS 或 localhost 下可用。请通过 localhost:3000 或安全地址打开网站。',
     noFace: '请站进画面里',
     loadingModel: '正在唤醒人脸面具…',
     noMasks: '人脸面具没能加载，但滤镜和纸张仍可使用。',

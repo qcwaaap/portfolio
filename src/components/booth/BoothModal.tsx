@@ -14,7 +14,7 @@ import styles from './Booth.module.css';
 const SHOTS = 4;
 const wait = (ms: number) => new Promise<void>((r) => window.setTimeout(r, ms));
 
-type Cam = 'asking' | 'ready' | 'denied' | 'missing';
+type Cam = 'asking' | 'ready' | 'denied' | 'missing' | 'busy' | 'insecure';
 type Phase = 'live' | 'shooting' | 'review';
 
 export function BoothModal({ onClose }: { onClose: () => void }) {
@@ -78,12 +78,19 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     let stream: MediaStream | null = null;
     let cancelled = false;
+    // камера работает только в защищённом контексте: https или localhost (по http://192.168… браузер её не даст)
+    if (!window.isSecureContext) {
+      setCam('insecure');
+      return;
+    }
     if (!navigator.mediaDevices?.getUserMedia) {
       setCam('missing');
       return;
     }
-    navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false })
+    const open = (video: MediaTrackConstraints | true) => navigator.mediaDevices.getUserMedia({ video, audio: false });
+    open({ facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 720 } })
+      // слишком строгие настройки — пробуем с любыми
+      .catch((e: unknown) => (e instanceof DOMException && (e.name === 'OverconstrainedError' || e.name === 'NotFoundError') ? open(true) : Promise.reject(e)))
       .then(async (s) => {
         if (cancelled) return s.getTracks().forEach((tr) => tr.stop());
         stream = s;
@@ -91,9 +98,17 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
         if (!v) return;
         v.srcObject = s;
         await v.play().catch(() => undefined);
+        // ждём настоящий кадр: до него drawImage рисует чёрный прямоугольник
+        if (v.readyState < 2 || !v.videoWidth) await new Promise<void>((r) => v.addEventListener('loadeddata', () => r(), { once: true }));
+        if (cancelled) return;
         setCam('ready');
       })
-      .catch((e: unknown) => setCam(e instanceof DOMException && e.name === 'NotAllowedError' ? 'denied' : 'missing'));
+      .catch((e: unknown) => {
+        const name = e instanceof DOMException ? e.name : '';
+        console.warn('[photo booth] camera error:', name, e);
+        if (cancelled) return;
+        setCam(name === 'NotAllowedError' || name === 'SecurityError' ? 'denied' : name === 'NotReadableError' || name === 'AbortError' ? 'busy' : 'missing');
+      });
     return () => {
       cancelled = true;
       stream?.getTracks().forEach((tr) => tr.stop()); // лампочка камеры должна погаснуть
@@ -131,11 +146,12 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
     let lastDetect = 0;
     let lastTime = -1;
     let seen = true;
+    let failures = 0;
     const t0 = performance.now();
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
-      if (document.hidden || video.readyState < 2 || phaseRef.current === 'review') return;
+      if (document.hidden || video.readyState < 2 || !video.videoWidth || phaseRef.current === 'review') return;
       const tr = trackerRef.current;
       if (tr && now - lastDetect > 40 && video.currentTime !== lastTime) {
         lastDetect = now;
@@ -143,8 +159,15 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
         try {
           const found = facesFrom(detectFaces(tr, video, now), video);
           faces = found.map((f, i) => smoothFace(faces[i], f));
-        } catch {
+          failures = 0;
+        } catch (e) {
           faces = [];
+          // несколько сбоев подряд — модель не работает: скажем об этом, а не будем молчать
+          if (++failures === 1) console.warn('[photo booth] face detection error:', e);
+          if (failures >= 5) {
+            trackerRef.current = null;
+            setTracker('failed');
+          }
         }
         const has = faces.length > 0;
         if (has !== seen) {
@@ -263,7 +286,7 @@ export function BoothModal({ onClose }: { onClose: () => void }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  const camMessage = cam === 'denied' ? t.denied : cam === 'missing' ? t.noCamera : null;
+  const camMessage = { denied: t.denied, missing: t.noCamera, busy: t.busy, insecure: t.insecure, asking: null, ready: null }[cam];
   const busy = phase === 'shooting';
 
   return (

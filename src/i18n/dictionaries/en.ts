@@ -70,6 +70,8 @@ export const en = {
     askingCamera: 'allow the camera to start',
     denied: 'Camera access was blocked. Allow it in the browser settings and reopen the booth.',
     noCamera: 'No camera found on this device.',
+    busy: 'The camera is busy or blocked by the system. Close other apps that use it (Zoom, FaceTime) and check the browser permission in system settings.',
+    insecure: 'The camera only works over HTTPS or on localhost. Open the site at localhost:3000 or on a secure address.',
     noFace: 'step into the frame',
     loadingModel: 'waking up the face masks…',
     noMasks: 'Face masks could not load, but filters and paper still work.',

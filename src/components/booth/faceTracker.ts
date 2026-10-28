@@ -15,13 +15,9 @@ export function loadFaceTracker(): Promise<FaceLandmarker> {
   landmarker ??= (async () => {
     const { FaceLandmarker, FilesetResolver } = await import('@mediapipe/tasks-vision');
     const fileset = await FilesetResolver.forVisionTasks(WASM);
-    const make = (delegate: 'GPU' | 'CPU') =>
-      FaceLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: MODEL, delegate }, runningMode: 'VIDEO', numFaces: 2 });
-    try {
-      return await make('GPU');
-    } catch {
-      return await make('CPU');
-    }
+    // CPU: на кадр уходит 10–20 мс, зато работает везде. GPU-режим на части видеокарт создаётся,
+    // но потом молча не находит лица.
+    return FaceLandmarker.createFromOptions(fileset, { baseOptions: { modelAssetPath: MODEL, delegate: 'CPU' }, runningMode: 'VIDEO', numFaces: 2 });
   })().catch((e) => {
     landmarker = null; // дадим попробовать ещё раз
     throw e;
