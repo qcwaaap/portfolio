@@ -28,7 +28,7 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
   const rootRef = useRef<HTMLElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const wheelRef = useRef<SVGSVGElement>(null);
-  const pointerRef = useRef<SVGGElement>(null);
+  const pointerRef = useRef<SVGSVGElement>(null);
   const rpmRef = useRef<HTMLSpanElement>(null);
   const waveA = useRef<SVGPathElement>(null);
   const waveB = useRef<SVGPathElement>(null);
@@ -56,6 +56,8 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
     let phase = 0;
     let last = performance.now();
     let lastShown = -1;
+    let lastNeedle = NaN;
+    let frame = 0;
 
     const paintWave = (amp: number) => {
       a.setAttribute('d', wavePath(phase, amp, WAVE_NOISE));
@@ -85,7 +87,12 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
       rpm += (target - rpm) * (1 - Math.exp(-dt * 5));
 
       wheel.style.transform = `rotate(${(angle % 360).toFixed(2)}deg)`;
-      pointer.setAttribute('transform', `rotate(${rpmToAngle(rpm).toFixed(2)} ${CX} ${CY})`);
+      // стрелка — отдельный слой: вращаем CSS-ом, а не атрибутом внутри svg (тот перерисовывал всё кольцо)
+      const needle = Math.round(rpmToAngle(rpm) * 20) / 20;
+      if (needle !== lastNeedle) {
+        lastNeedle = needle;
+        pointer.style.transform = `rotate(${needle}deg)`;
+      }
 
       const shown = Math.round(rpm);
       if (shown !== lastShown) {
@@ -95,7 +102,8 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
 
       if (!reduced) {
         phase += dt * (rpm / 60) * 0.55;
-        paintWave(20 * (0.78 + (rpm - BASE_RPM) / 90));
+        // волна перестраивает path и перерисовывается — 30 кадров/с ей хватает
+        if (++frame % 2 === 0) paintWave(20 * (0.78 + (rpm - BASE_RPM) / 90));
       }
     };
 
@@ -246,9 +254,17 @@ export function CadenceSpotlight({ onOpen }: { onOpen: () => void }) {
               <text x={CX} y={566} textAnchor="middle" className={styles.ringHint}>
                 {tx.cadence.hint}
               </text>
-              <g ref={pointerRef} transform={`rotate(${rpmToAngle(BASE_RPM)} ${CX} ${CY})`}>
-                <path d="M300 70L291 46L309 46Z" className={styles.needle} />
-              </g>
+            </svg>
+
+            {/* стрелка тахометра отдельным слоем, чтобы её движение не перерисовывало кольцо */}
+            <svg
+              ref={pointerRef}
+              className={styles.needleLayer}
+              viewBox="0 0 600 600"
+              style={{ transform: `rotate(${rpmToAngle(BASE_RPM)}deg)` }}
+              aria-hidden
+            >
+              <path d="M300 70L291 46L309 46Z" className={styles.needle} />
             </svg>
 
             {/* вращающееся колесо: отдельный слой, крутится через CSS-transform (без перерисовки) */}

@@ -108,14 +108,13 @@ export function Cursor() {
       apply();
     };
 
-    // контент едет под неподвижным курсором (скролл) — пересчитываем состояние
-    let raf = 0;
+    // контент едет под неподвижным курсором (скролл) — пересчитываем состояние, когда скролл затих:
+    // elementFromPoint на каждом кадре заставляет браузер пересчитывать раскладку
+    let timer = 0;
     const onScroll = () => {
-      if (raf || !shown) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        update(document.elementFromPoint(px, py));
-      });
+      if (!shown) return;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => update(document.elementFromPoint(px, py)), 90);
     };
 
     // смена темы: перекрасить точку, если курсор сейчас обычный
@@ -134,7 +133,7 @@ export function Cursor() {
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('scroll', onScroll);
       document.documentElement.removeEventListener('mouseleave', onLeave);
-      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
       themeObserver.disconnect();
       gsap.killTweensOf([root, bubble, text]);
       html.classList.remove('has-cursor');

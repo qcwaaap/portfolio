@@ -62,7 +62,13 @@ export function Hero({ revealed }: { revealed: boolean }) {
           x: gsap.quickTo(node, 'x', { duration: 0.9, ease: 'power3' }),
           y: gsap.quickTo(node, 'y', { duration: 0.9, ease: 'power3' }),
         }));
+        // за пределами экрана (ушли вниз по странице) не двигаем предметы вхолостую
+        let visible = true;
+        const io = new IntersectionObserver(([entry]) => (visible = !!entry?.isIntersecting));
+        io.observe(root);
+        cleanups.push(() => io.disconnect());
         const onMove = (e: PointerEvent) => {
+          if (!visible) return;
           const nx = (e.clientX / window.innerWidth) * 2 - 1;
           const ny = (e.clientY / window.innerHeight) * 2 - 1;
           movers.forEach((m) => {
@@ -209,7 +215,7 @@ export function Hero({ revealed }: { revealed: boolean }) {
       </Item>
       <Item className={styles.me} depth={0.55} rotate={3} enter="right" z={3}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.meImg} fetchPriority="high" src="/images/maria.webp" alt="Maria Nedbailova" width={680} height={700} decoding="async" />
+        <img className={styles.meImg} fetchPriority="high" src="/images/maria-sticker.webp" alt="Maria Nedbailova" width={734} height={754} decoding="async" />
       </Item>
       {/* «I» и последняя «A» лежат поверх фото и прячут часть руки */}
       <Item className={styles.titleMaria} depth={0.3} z={4}>

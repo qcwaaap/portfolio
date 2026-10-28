@@ -136,16 +136,16 @@
 .me {
   left: 35vw;
   top: 12%;
-  width: 30vw;
+  /* 30vw — ширина самой вырезки; в файле вокруг неё 24px запечённого контура и тени (734 / 680) */
+  width: 32.4vw;
+  margin: -1.06vw 0 0 -1.06vw;
 }
 
-/* вырезка как наклейка: белый контур + тень */
+/* вырезка как наклейка: белый контур и тень запечены в maria-sticker.webp (CSS drop-shadow ×5 тормозил кадры) */
 .meImg {
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)
-    drop-shadow(4px 8px 10px rgb(0 0 0 / 0.25));
 }
 
 .star1 {
@@ -313,7 +313,8 @@
   .me {
     left: 18vw;
     top: 8%;
-    width: 64vw;
+    width: 69.1vw;
+    margin: -2.26vw 0 0 -2.26vw;
   }
 
   .star1 {

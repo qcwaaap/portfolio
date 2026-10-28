@@ -67,6 +67,8 @@
 .host {
   position: absolute;
   inset: 3%;
+  /* двигается за мышью: свой слой, чтобы кольцо и текст не перерисовывались каждый кадр */
+  will-change: transform;
   cursor: grab;
   touch-action: pan-y;
   user-select: none;
@@ -77,7 +79,8 @@
 }
 
 .ring,
-.wheel {
+.wheel,
+.needleLayer {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -85,7 +88,8 @@
   overflow: visible;
 }
 
-.wheel {
+.wheel,
+.needleLayer {
   will-change: transform;
   transform-origin: 50% 50%;
 }

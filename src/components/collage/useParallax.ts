@@ -40,7 +40,13 @@ export function useParallax(rootRef: RefObject<HTMLElement | null>) {
           x: gsap.quickTo(node, 'x', { duration: 0.9, ease: 'power3' }),
           y: gsap.quickTo(node, 'y', { duration: 0.9, ease: 'power3' }),
         }));
+        // секции вне экрана не двигаем: иначе каждое движение мыши гоняет десятки твинов вхолостую
+        let visible = true;
+        const io = new IntersectionObserver(([entry]) => (visible = !!entry?.isIntersecting));
+        io.observe(root);
+        cleanups.push(() => io.disconnect());
         const onMove = (e: PointerEvent) => {
+          if (!visible) return;
           const nx = (e.clientX / window.innerWidth) * 2 - 1;
           const ny = (e.clientY / window.innerHeight) * 2 - 1;
           movers.forEach((m) => {
