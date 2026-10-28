@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { tearTransition } from '@/lib/pageTear';
 import { LOCALE_COOKIE, LOCALE_LABELS, type Locale } from './config';
 import { DICTIONARIES, type Dictionary } from './dictionaries';
 
@@ -15,9 +16,12 @@ const LocaleContext = createContext<Ctx | null>(null);
  */
 export function LocaleProvider({ initial, children }: { initial: Locale; children: ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>(initial);
+  const localeRef = useRef(initial);
 
   const setLocale = useCallback((next: Locale) => {
-    setLocaleState(next);
+    if (next === localeRef.current) return;
+    localeRef.current = next;
+    tearTransition(() => setLocaleState(next), 'left');
     try {
       document.cookie = `${LOCALE_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
     } catch {}

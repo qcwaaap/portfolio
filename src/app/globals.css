@@ -129,3 +129,19 @@ html.has-cursor * {
   cursor: none !important;
 }
 
+
+/* Разрыв листа (lib/pageTear.ts): стандартное перекрёстное затухание отключаем —
+   старая страница лежит сверху и сама рвётся через clip-path, под ней сразу новая. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 2;
+}
+
+::view-transition-new(root) {
+  z-index: 1;
+}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useT } from '@/i18n/LocaleProvider';
+import { canTear, tearTransition } from '@/lib/pageTear';
 import styles from './ThemeToggle.module.css';
 
 type Theme = 'light' | 'dark';
@@ -34,13 +35,21 @@ export function ThemeToggle() {
   const toggle = () => {
     const next: Theme = (theme ?? current()) === 'dark' ? 'light' : 'dark';
     const html = document.documentElement;
-    html.classList.add('theme-fade');
-    html.dataset.theme = next;
-    window.setTimeout(() => html.classList.remove('theme-fade'), 400);
     try {
       localStorage.setItem(KEY, next);
     } catch {}
-    setTheme(next);
+    const apply = () => {
+      html.dataset.theme = next;
+      setTheme(next);
+    };
+    if (canTear()) {
+      tearTransition(apply, 'up');
+      return;
+    }
+    // без разрыва — мягкое затухание цветов
+    html.classList.add('theme-fade');
+    apply();
+    window.setTimeout(() => html.classList.remove('theme-fade'), 400);
   };
 
   const dark = theme === 'dark';
